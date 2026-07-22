@@ -113,12 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Evidence actions
         document.getElementById("select-history-run")?.addEventListener("change", (e) => loadReportIframe(e.target.value));
         document.getElementById("btn-export-html")?.addEventListener("click", () => {
-            const runId = document.getElementById("select-history-run").value;
-            if (runId) window.open(`/api/v1/reports/html/${runId}`, "_blank");
+            const select = document.getElementById("select-history-run");
+            if (select && select.value) window.open(`/api/v1/reports/html/${select.value}`, "_blank");
         });
         document.getElementById("btn-export-md")?.addEventListener("click", () => {
-            const runId = document.getElementById("select-history-run").value;
-            if (runId) window.open(`/api/v1/reports/markdown/${runId}`, "_blank");
+            const select = document.getElementById("select-history-run");
+            if (select && select.value) window.open(`/api/v1/reports/markdown/${select.value}`, "_blank");
         });
     }
 
@@ -172,12 +172,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function setActiveSpec(spec) {
+        if (!spec) return;
         state.activeSpec = spec;
+        
         const specTitleEl = document.getElementById("sidebar-spec-title");
-        if (specTitleEl) specTitleEl.innerText = spec.title;
+        if (specTitleEl) specTitleEl.innerText = spec.title || "Loaded Spec";
 
-        if (document.getElementById("exec-target-url")) {
-            document.getElementById("exec-target-url").value = window.location.origin;
+        const execUrlInput = document.getElementById("exec-target-url");
+        if (execUrlInput) {
+            execUrlInput.value = spec.base_url || window.location.origin;
         }
         renderSpecDetails(spec);
     }
@@ -189,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setActiveSpec(spec);
             alert(`API Spec '${spec.title}' imported successfully!`);
         } catch (err) {
+            console.error("Upload handler error:", err);
             alert(`Error uploading file: ${err.message}`);
         }
     }
@@ -256,25 +260,34 @@ paths:
 
     function renderSpecDetails(spec) {
         const viewCard = document.getElementById("spec-parsed-view");
-        if (!viewCard) return;
+        if (!viewCard || !spec) return;
 
         viewCard.classList.remove("hidden");
-        document.getElementById("view-spec-title").innerText = spec.title;
-        document.getElementById("view-spec-version").innerText = `v${spec.version}`;
-        document.getElementById("view-spec-baseurl").innerText = spec.base_url || window.location.origin;
-        document.getElementById("view-endpoint-count").innerText = spec.endpoints_count;
+        
+        const titleEl = document.getElementById("view-spec-title");
+        if (titleEl) titleEl.innerText = spec.title || "Untitled Spec";
+
+        const versionEl = document.getElementById("view-spec-version");
+        if (versionEl) versionEl.innerText = `v${spec.version || "1.0"}`;
+
+        const urlEl = document.getElementById("view-spec-baseurl");
+        if (urlEl) urlEl.innerText = spec.base_url || window.location.origin;
+
+        const countEl = document.getElementById("view-endpoint-count");
+        if (countEl) countEl.innerText = spec.endpoints_count !== undefined ? spec.endpoints_count : 0;
 
         const container = document.getElementById("endpoints-tree");
+        if (!container) return;
         container.innerHTML = "";
 
         const endpoints = spec.parsed_metadata?.endpoints || [];
         endpoints.forEach(ep => {
             const row = document.createElement("div");
             row.className = "endpoint-row";
-            const methodClass = `badge-method-${ep.method.toLowerCase()}`;
+            const methodClass = `badge-method-${(ep.method || 'get').toLowerCase()}`;
             row.innerHTML = `
-                <span class="badge ${methodClass}">${ep.method}</span>
-                <strong style="font-size:0.9rem;">${ep.path}</strong>
+                <span class="badge ${methodClass}">${ep.method || 'GET'}</span>
+                <strong style="font-size:0.9rem;">${ep.path || '/'}</strong>
                 <span class="text-muted" style="font-size:0.8rem; flex-grow:1;">${ep.summary || ''}</span>
                 ${ep.has_auth ? '<span class="badge badge-warning">AUTH REQUIRED</span>' : ''}
             `;
@@ -306,20 +319,22 @@ paths:
     function renderRiskData() {
         if (!state.riskData) return;
         const badge = document.getElementById("risk-overall-badge");
-        badge.innerText = `${state.riskData.overall_risk} RISK (${state.riskData.risk_score}/100)`;
+        if (badge) badge.innerText = `${state.riskData.overall_risk || 'MEDIUM'} RISK (${state.riskData.risk_score || 50}/100)`;
         
-        document.getElementById("risk-summary-text").innerText = state.riskData.summary;
+        const summaryText = document.getElementById("risk-summary-text");
+        if (summaryText) summaryText.innerText = state.riskData.summary || "AI Risk Assessment completed.";
 
         const grid = document.getElementById("risk-cards-grid");
+        if (!grid) return;
         grid.innerHTML = "";
 
         (state.riskData.endpoint_risks || []).forEach(ep => {
             const card = document.createElement("div");
             card.className = "risk-card";
-            const methodClass = `badge-method-${ep.method.toLowerCase()}`;
+            const methodClass = `badge-method-${(ep.method || 'get').toLowerCase()}`;
             const riskClass = ep.risk_level === "HIGH" ? "badge-fail" : (ep.risk_level === "MEDIUM" ? "badge-warning" : "badge-pass");
 
-            const reasonsHtml = ep.reasons.map(r => `<li style="font-size:0.82rem; color:var(--text-secondary); margin-top:0.25rem;">${r}</li>`).join("");
+            const reasonsHtml = (ep.reasons || []).map(r => `<li style="font-size:0.82rem; color:var(--text-secondary); margin-top:0.25rem;">${r}</li>`).join("");
 
             card.innerHTML = `
                 <div class="risk-card-header">
@@ -341,8 +356,10 @@ paths:
     async function loadTestCases() {
         if (!state.activeSpec) return;
         try {
-            const category = document.getElementById("filter-category").value;
-            const priority = document.getElementById("filter-priority").value;
+            const catEl = document.getElementById("filter-category");
+            const prioEl = document.getElementById("filter-priority");
+            const category = catEl ? catEl.value : "";
+            const priority = prioEl ? prioEl.value : "";
             state.testCases = await APIClient.getTestCases(state.activeSpec.id, category, priority);
             renderTestCases();
         } catch (err) {
@@ -365,12 +382,14 @@ paths:
         if (!grid) return;
         grid.innerHTML = "";
 
-        const categoryFilter = document.getElementById("filter-category").value.toLowerCase();
-        const priorityFilter = document.getElementById("filter-priority").value.toLowerCase();
+        const catEl = document.getElementById("filter-category");
+        const prioEl = document.getElementById("filter-priority");
+        const categoryFilter = catEl ? catEl.value.toLowerCase() : "";
+        const priorityFilter = prioEl ? prioEl.value.toLowerCase() : "";
 
         const filtered = state.testCases.filter(tc => {
-            const matchCat = !categoryFilter || tc.category.toLowerCase() === categoryFilter;
-            const matchPrio = !priorityFilter || tc.priority.toLowerCase() === priorityFilter;
+            const matchCat = !categoryFilter || (tc.category && tc.category.toLowerCase() === categoryFilter);
+            const matchPrio = !priorityFilter || (tc.priority && tc.priority.toLowerCase() === priorityFilter);
             return matchCat && matchPrio;
         });
 
@@ -382,15 +401,15 @@ paths:
         filtered.forEach(tc => {
             const card = document.createElement("div");
             card.className = "tc-card";
-            const methodClass = `badge-method-${tc.method.toLowerCase()}`;
+            const methodClass = `badge-method-${(tc.method || 'get').toLowerCase()}`;
             
             card.innerHTML = `
                 <div class="tc-header">
                     <div>
-                        <span class="badge ${methodClass}">${tc.method}</span>
+                        <span class="badge ${methodClass}">${tc.method || 'GET'}</span>
                         <strong style="font-size:0.95rem; margin-left:0.4rem;">${tc.title}</strong>
                     </div>
-                    <span class="badge badge-warning">${tc.priority}</span>
+                    <span class="badge badge-warning">${tc.priority || 'MEDIUM'}</span>
                 </div>
                 <div style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.75rem;">
                     <strong>Category:</strong> ${tc.category}<br>
@@ -412,31 +431,38 @@ paths:
             return;
         }
 
-        const targetUrl = document.getElementById("exec-target-url").value || window.location.origin;
+        const urlInput = document.getElementById("exec-target-url");
+        const targetUrl = (urlInput && urlInput.value) ? urlInput.value : window.location.origin;
+        
         const progressWrap = document.getElementById("exec-progress-wrap");
         const progressFill = document.getElementById("exec-progress-fill");
         const resultsList = document.getElementById("exec-results-list");
 
-        progressWrap.classList.remove("hidden");
-        progressFill.style.width = "40%";
-        resultsList.innerHTML = `<div class="card center" style="padding:2.5rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);"><i data-lucide="loader" class="spin"></i> Executing real HTTP scenarios against ${targetUrl}...</div>`;
+        if (progressWrap) progressWrap.classList.remove("hidden");
+        if (progressFill) progressFill.style.width = "40%";
+        if (resultsList) {
+            resultsList.innerHTML = `<div class="card center" style="padding:2.5rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);"><i data-lucide="loader" class="spin"></i> Executing real HTTP scenarios against ${targetUrl}...</div>`;
+        }
         if (window.lucide) lucide.createIcons();
 
         try {
             const run = await APIClient.runExecution(state.activeSpec.id, targetUrl);
-            progressFill.style.width = "100%";
+            if (progressFill) progressFill.style.width = "100%";
             state.currentRun = run;
 
             const results = await APIClient.getExecutionResults(run.id);
             renderExecutionResults(run, results);
             refreshDashboard();
         } catch (err) {
-            resultsList.innerHTML = `<div class="card center badge-fail" style="padding:2.5rem;">Execution Error: ${err.message}</div>`;
+            if (resultsList) {
+                resultsList.innerHTML = `<div class="card center badge-fail" style="padding:2.5rem;">Execution Error: ${err.message}</div>`;
+            }
         }
     }
 
     async function renderExecutionResults(run, results) {
         const resultsList = document.getElementById("exec-results-list");
+        if (!resultsList) return;
         resultsList.innerHTML = "";
 
         results.forEach(res => {
@@ -468,6 +494,7 @@ paths:
         try {
             const runs = await APIClient.getExecutionRuns(state.activeSpec.id);
             const select = document.getElementById("select-history-run");
+            if (!select) return;
             select.innerHTML = `<option value="">Select Execution Run</option>`;
 
             runs.forEach(r => {
@@ -488,7 +515,7 @@ paths:
 
     function loadReportIframe(runId) {
         const iframe = document.getElementById("report-iframe");
-        if (runId) {
+        if (iframe && runId) {
             iframe.src = `/api/v1/reports/html/${runId}`;
         }
     }
@@ -497,10 +524,15 @@ paths:
     async function refreshDashboard() {
         try {
             const data = await APIClient.getDashboardMetrics();
-            document.getElementById("dash-total-apis").innerText = data.total_apis;
-            document.getElementById("dash-total-endpoints").innerText = data.total_endpoints;
-            document.getElementById("dash-total-tests").innerText = data.total_test_cases;
-            document.getElementById("dash-pass-rate").innerText = `${data.overall_pass_rate}%`;
+            const apisEl = document.getElementById("dash-total-apis");
+            const epEl = document.getElementById("dash-total-endpoints");
+            const tcEl = document.getElementById("dash-total-tests");
+            const prEl = document.getElementById("dash-pass-rate");
+
+            if (apisEl) apisEl.innerText = data.total_apis !== undefined ? data.total_apis : 0;
+            if (epEl) epEl.innerText = data.total_endpoints !== undefined ? data.total_endpoints : 0;
+            if (tcEl) tcEl.innerText = data.total_test_cases !== undefined ? data.total_test_cases : 0;
+            if (prEl) prEl.innerText = `${data.overall_pass_rate !== undefined ? data.overall_pass_rate : 0}%`;
 
             updateCharts(data);
         } catch (err) {
@@ -559,7 +591,7 @@ paths:
 
     function updateCharts(data) {
         if (state.charts.passFail) {
-            state.charts.passFail.data.datasets[0].data = [data.total_passed, data.total_failed];
+            state.charts.passFail.data.datasets[0].data = [data.total_passed || 0, data.total_failed || 0];
             state.charts.passFail.update();
         }
 
