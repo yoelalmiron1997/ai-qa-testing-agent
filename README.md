@@ -5,47 +5,47 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An enterprise-grade autonomous AI QA platform designed for QA Engineers to analyze REST APIs documented with OpenAPI/Swagger specifications, perform automated endpoint risk assessment, generate multi-dimensional test scenarios, execute real HTTP assertions, diagnose root-cause defects, and generate evidence-backed quality reports.
+Plataforma empresarial de Agente de IA autónomo diseñada para ingenieros de QA. Analiza especificaciones REST API documentadas con OpenAPI/Swagger, realiza evaluación automática de riesgos en endpoints, genera escenarios de prueba multidimensionales, ejecuta aserciones HTTP reales, diagnostica defectos con razonamiento de causa raíz y produce reportes profesionales respaldados con evidencia.
 
 ---
 
-## 🚀 Key Features
+## 🚀 Funcionalidades Principales
 
-* **📄 OpenAPI/Swagger Parsing**: Ingests `openapi.json`, `swagger.json`, or `.yaml` files (OpenAPI 2.0 / 3.0 / 3.1). Automatically extracts endpoints, parameters, request body schemas, response codes, and security requirements.
-* **🛡️ Endpoint Risk Analysis**: Automatically evaluates endpoints based on security sensitivity, authentication requirements, state mutation methods (`POST`, `PUT`, `DELETE`), user input vectors, and dynamic path parameters. Assigns `HIGH`, `MEDIUM`, or `LOW` risk ratings with bulleted rationale explanations.
-* **⚡ 9-Dimension Test Scenario Generator**: Generates prioritized test cases covering:
-  1. **Functional** (Happy Path)
-  2. **Boundary** (Edge values, empty strings)
-  3. **Negative** (404 non-existent resource IDs)
-  4. **Security** (Missing authentication tokens)
-  5. **Authorization** (Invalid or expired bearer tokens)
-  6. **Invalid Payload** (Malformed JSON/empty body)
-  7. **Missing Fields** (Omitting required properties)
-  8. **Large Payload** (Oversized input strings)
-  9. **Unexpected Types** (Passing boolean/string instead of integer)
-* **🌐 Real HTTP Execution Engine**: Executes real HTTP requests against designated base target URLs. Measures response latency in milliseconds (`ms`), captures status codes, request/response headers, and validates JSON schemas.
-* **🧠 AI Defect Diagnostic Engine**: Performs automated root cause analysis whenever a test fails or returns unexpected HTTP status codes (e.g., HTTP 500 returned instead of 404/400). Provides confidence scores (`HIGH`, `MEDIUM`, `LOW`), explains the failure mechanism, and delivers developer fix recommendations.
-* **📄 Evidence & Professional Reports**: Generates standalone **Jinja2 HTML Reports** and **Markdown Summaries** with metric badges, payload code blocks, and inline AI defect diagnostics.
-* **📊 Quality Dashboard & Evolution**: SQLite database tracking specifications, risk analyses, test cases, execution runs, test results, and historical pass rate trends over time.
+* **📄 Lectura e Inspección OpenAPI/Swagger**: Procesa archivos `openapi.json`, `swagger.json` o `.yaml` (OpenAPI 2.0 / 3.0 / 3.1). Extrae automáticamente endpoints, parámetros, esquemas de entrada, códigos de respuesta y requisitos de seguridad.
+* **🛡️ Análisis de Riesgo por Endpoint**: Evalúa automáticamente el riesgo de cada endpoint basándose en sensibilidad de seguridad, autenticación requerida, métodos de mutación de datos (`POST`, `PUT`, `DELETE`), vectores de entrada de usuario y parámetros de ruta. Asigna clasificaciones `HIGH`, `MEDIUM` o `LOW` acompañadas de la justificación técnica.
+* **⚡ Generador de Pruebas en 9 Dimensiones**: Genera casos de prueba priorizados cubriendo:
+  1. **Functional** (Camino feliz)
+  2. **Boundary** (Valores límite y cadenas vacías)
+  3. **Negative** (Recursos no existentes / HTTP 404)
+  4. **Security** (Acceso sin token de autenticación)
+  5. **Authorization** (Tokens inválidos o expirados)
+  6. **Invalid Payload** (Cuerpos JSON malformados o vacíos)
+  7. **Missing Fields** (Omisión de campos requeridos)
+  8. **Large Payload** (Entradas con cargas masivas)
+  9. **Unexpected Types** (Tipos de datos incorrectos, ej: booleano por entero)
+* **🌐 Motor de Ejecución HTTP Real**: Realiza solicitudes HTTP reales contra el API objetivo. Mide el tiempo de respuesta exacto en milisegundos (`ms`), captura códigos de estado, cabeceras y valida esquemas de respuesta JSON.
+* **🧠 Diagnóstico de Defectos por IA**: Realiza un análisis automatizado de causa raíz cada vez que una prueba falla o devuelve un código inesperado (ej: HTTP 500 en lugar de 404/400). Emite un nivel de confianza (`HIGH`, `MEDIUM`, `LOW`), explica el mecanismo de falla y ofrece recomendaciones concretas para los desarrolladores.
+* **📄 Reportes Profesionales con Evidencia**: Produce reportes **HTML independientes (Jinja2)** e informes en **Markdown** con insignias métricas, fragmentos de código payload/respuesta y tarjetas de diagnóstico de IA.
+* **📊 Panel de Control y Evolución de Calidad**: Base de datos SQLite que registra especificaciones, análisis de riesgo, casos de prueba, corridas de ejecución, resultados detallados y gráficos de evolución de pass rate a lo largo del tiempo.
 
 ---
 
-## 🏗️ Architecture & Project Structure
+## 🏗️ Arquitectura y Estructura del Proyecto
 
-The project follows **Clean Architecture** principles to separate domain logic, agent reasoning, executable tools, storage, and API controllers.
+El proyecto sigue los principios de **Clean Architecture** (Arquitectura Limpia) para separar el dominio de negocio, el razonamiento del agente, las herramientas ejecutables, el almacenamiento y los controladores REST.
 
 ```
 ai-qa-testing-agent/
 ├── app/
-│   ├── main.py                  # FastAPI application entry point & static UI mount
-│   ├── core/                    # Settings, Database engine, LLM client factory
+│   ├── main.py                  # Punto de entrada FastAPI y servidor de UI estática
+│   ├── core/                    # Configuración, motor de Base de Datos y cliente LLM
 │   │   ├── config.py
 │   │   ├── database.py
 │   │   └── llm.py
-│   ├── storage/                 # SQLAlchemy Entities & Repository Layer
+│   ├── storage/                 # Entidades SQLAlchemy y Repositorio de Datos
 │   │   ├── models.py
 │   │   └── repository.py
-│   ├── services/                # Domain & Business logic engines
+│   ├── services/                # Motores de Lógica de Negocio
 │   │   ├── openapi_parser.py
 │   │   ├── risk_analyzer.py
 │   │   ├── test_generator.py
@@ -53,20 +53,20 @@ ai-qa-testing-agent/
 │   │   ├── defect_analyzer.py
 │   │   ├── report_service.py
 │   │   └── analytics_service.py
-│   ├── agent/                   # Autonomous AI QA Agent Orchestration
+│   ├── agent/                   # Orquestador del Agente de IA de QA
 │   │   ├── qa_agent.py
 │   │   └── prompts.py
-│   ├── tools/                   # Decoupled Executable Agent Tools
+│   ├── tools/                   # Herramientas Ejecutables Desacopladas
 │   │   ├── base.py
 │   │   ├── openapi_tool.py
 │   │   ├── http_tool.py
 │   │   ├── schema_tool.py
 │   │   └── report_tool.py
-│   ├── reports/                 # Jinja2 Evidence Report Templates
+│   ├── reports/                 # Plantillas Jinja2 para Reportes
 │   │   └── templates/
 │   │       └── report.html.j2
 │   └── api/
-│       └── v1/                  # REST API Endpoints
+│       └── v1/                  # Rutas y Controladores REST API
 │           ├── apis.py
 │           ├── risk.py
 │           ├── testcases.py
@@ -74,73 +74,73 @@ ai-qa-testing-agent/
 │           ├── ai_analysis.py
 │           ├── reports.py
 │           └── dashboard.py
-├── frontend/                    # Modern Dark SPA (Linear / Vercel style)
+├── frontend/                    # SPA Tema Oscuro Moderno (Estilo Linear / Vercel)
 │   ├── index.html
 │   ├── css/style.css
 │   └── js/
 │       ├── api_client.js
 │       └── app.js
-├── tests/                       # Pytest Automated Test Suite
+├── tests/                       # Batería de Pruebas Automatizadas (Pytest)
 │   ├── test_openapi_parser.py
 │   ├── test_risk_analyzer.py
 │   ├── test_test_generator.py
 │   └── test_defect_analyzer.py
-├── Dockerfile                   # Production Docker Container Definition
-├── docker-compose.yml           # Container Orchestration
-└── requirements.txt             # Project Dependencies
+├── Dockerfile                   # Definición de Contenedor Docker de Producción
+├── docker-compose.yml           # Orquestación de Contenedor
+└── requirements.txt             # Dependencias del Proyecto
 ```
 
 ---
 
-## ⚙️ Getting Started
+## ⚙️ Guía de Inicio Rápido
 
-### Prerequisites
-- Python 3.10+ (or Docker)
+### Requisitos Previos
+- Python 3.10+ (o Docker)
 - Git
 
-### Option 1: Running with Docker Compose (Recommended)
+### Opción 1: Ejecución con Docker Compose (Recomendado)
 
-1. Clone the repository:
+1. Clona el repositorio:
    ```bash
    git clone https://github.com/yoelalmiron1997/ai-qa-testing-agent.git
    cd ai-qa-testing-agent
    ```
-2. Launch with Docker Compose:
+2. Inicia la aplicación con Docker Compose:
    ```bash
    docker-compose up --build
    ```
-3. Open your browser at `http://localhost:8000`.
+3. Abre tu navegador en `http://localhost:8000`.
 
-### Option 2: Running Locally with Virtual Environment
+### Opción 2: Ejecución Local con Entorno Virtual (Python)
 
-1. Clone the repository:
+1. Clona el repositorio:
    ```bash
    git clone https://github.com/yoelalmiron1997/ai-qa-testing-agent.git
    cd ai-qa-testing-agent
    ```
-2. Create and activate virtual environment:
+2. Crea y activa el entorno virtual:
    ```bash
    python -m venv venv
-   # On Windows:
+   # En Windows:
    .\venv\Scripts\activate
-   # On Linux/macOS:
+   # En Linux/macOS:
    source venv/bin/activate
    ```
-3. Install dependencies:
+3. Instala las dependencias:
    ```bash
    pip install -r requirements.txt
    ```
-4. Start the Uvicorn dev server:
+4. Inicia el servidor Uvicorn:
    ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
-5. Open your browser at `http://localhost:8000`.
+5. Abre tu navegador en `http://localhost:8000`.
 
 ---
 
-## 🧪 Running Automated Tests
+## 🧪 Pruebas Automatizadas
 
-Run the `pytest` test suite:
+Para ejecutar la suite de pruebas unitarias e integración con `pytest`:
 
 ```bash
 pytest tests/ -v
@@ -148,17 +148,17 @@ pytest tests/ -v
 
 ---
 
-## 🔮 Platform Extensibility Roadmap
+## 🔮 Roadmap de Extensibilidad
 
-Designed as a foundation for a complete **AI QA Platform**:
-- 🎭 **Playwright / Cypress Integration**: E2E web flow validation extension.
-- 🤖 **Robot Framework Exporter**: Export test suites to `.robot` format.
-- 🔌 **MCP Server Support**: Expose QA tools via Model Context Protocol.
-- 🎫 **Jira & GitHub Issues Connector**: Automatically publish high-confidence defects as tickets.
-- 📈 **Prometheus & Grafana Exporter**: Metrics monitoring via `/metrics`.
+Diseñado como la base de una plataforma integral de **AI QA Platform**:
+- 🎭 **Integración con Playwright / Cypress**: Validación de flujos web E2E.
+- 🤖 **Exportador Robot Framework**: Generación directa de archivos `.robot`.
+- 🔌 **Servidores MCP**: Exposición de capacidades vía Model Context Protocol.
+- 🎫 **Conector con Jira y GitHub Issues**: Publicación automática de defectos diagnosticados como tickets.
+- 📈 **Exportador Prometheus y Grafana**: Monitoreo de métricas vía `/metrics`.
 
 ---
 
-## 📄 License
+## 📄 Licencia
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distribuido bajo la Licencia MIT. Consulta `LICENSE` para más información.
