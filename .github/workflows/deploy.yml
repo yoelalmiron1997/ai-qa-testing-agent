@@ -5,19 +5,21 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   deploy-status:
     name: Mark Production Deployment Active
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://ai-qa-testing-agent.onrender.com
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Register GitHub Deployment
-        uses: chrindex/github-deployment-action@v2
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          environment: production
-          initial-status: success
-          target_url: https://ai-qa-testing-agent.onrender.com
-          description: Live Production Render Deployment
+      - name: Verify Live Deployment HTTP Response
+        run: |
+          curl -s -I https://ai-qa-testing-agent.onrender.com | head -n 5
