@@ -1,11 +1,24 @@
 # 🤖 AI QA Testing Agent Platform
 
+[![Release v1.0.0](https://img.shields.io/badge/Release-v1.0.0-blue.svg)](https://github.com/yoelalmiron1997/ai-qa-testing-agent/releases/tag/v1.0.0)
+[![Live Demo](https://img.shields.io/badge/Live--Demo-Render-brightgreen.svg?style=flat&logo=render)](https://ai-qa-testing-agent.onrender.com)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+> 🚀 **Despliegue en Vivo / Live Demo**: **[https://ai-qa-testing-agent.onrender.com](https://ai-qa-testing-agent.onrender.com)**
+
 Plataforma empresarial de Agente de IA autónomo diseñada para ingenieros de QA. Analiza especificaciones REST API documentadas con OpenAPI/Swagger, realiza evaluación automática de riesgos en endpoints, genera escenarios de prueba multidimensionales, ejecuta aserciones HTTP reales, diagnostica defectos con razonamiento de causa raíz y produce reportes profesionales respaldados con evidencia.
+
+---
+
+## 🌐 Demo & Despliegue Activo
+
+Puedes acceder a la versión en vivo de la plataforma desplegada en la nube:
+
+* 🌐 **Plataforma Web (UI)**: [https://ai-qa-testing-agent.onrender.com](https://ai-qa-testing-agent.onrender.com)
+* 📖 **Swagger API Docs**: [https://ai-qa-testing-agent.onrender.com/api/v1/docs](https://ai-qa-testing-agent.onrender.com/api/v1/docs)
 
 ---
 
@@ -145,6 +158,14 @@ Para ejecutar la suite de pruebas unitarias e integración con `pytest`:
 ```bash
 pytest tests/ -v
 ```
+
+---
+
+## 🏷️ Release v1.0.0
+
+Esta versión representa el primer release oficial del sistema:
+- Tag oficial: [`v1.0.0`](https://github.com/yoelalmiron1997/ai-qa-testing-agent/releases/tag/v1.0.0)
+- Despliegue continuo activado en Render.
 
 ---
 
