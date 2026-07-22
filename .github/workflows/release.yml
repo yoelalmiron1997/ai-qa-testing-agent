@@ -1,0 +1,36 @@
+name: Auto Publish GitHub Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "${{ github.ref_name }} - AI QA Testing Agent Platform"
+          body: |
+            ## 🚀 Primera Versión Oficial - AI QA Testing Agent Platform
+
+            - 📄 Lectura e inspección de archivos OpenAPI/Swagger (JSON/YAML)
+            - 🛡️ Análisis automático de riesgos por endpoint (High, Medium, Low)
+            - ⚡ Generador de pruebas en 9 categorías de QA
+            - 🌐 Ejecución HTTP real con aserciones y latencia
+            - 🧠 Diagnóstico de fallas con Inteligencia Artificial
+            - 📄 Reportes de evidencia en HTML (Jinja2) y Markdown
+            - 📊 Dashboard de calidad e historial de ejecuciones
+
+            **Live Demo:** https://ai-qa-testing-agent.onrender.com
+          draft: false
+          prerelease: false
