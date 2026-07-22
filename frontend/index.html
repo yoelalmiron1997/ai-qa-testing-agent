@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI QA Testing Agent Platform - Magic UI</title>
+    <title>AI QA Testing Agent Platform - Aceternity UI</title>
     <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Magic UI CSS -->
+    <!-- Aceternity UI CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="app-layout">
-        <!-- Magic UI Sidebar Navigation -->
+        <!-- Aceternity UI Sidebar Navigation -->
         <aside class="sidebar">
             <div class="brand">
-                <div class="logo-icon"><i data-lucide="sparkles"></i></div>
+                <div class="logo-icon"><i data-lucide="zap"></i></div>
                 <div class="brand-text">
-                    <span class="title">Magic AI QA</span>
+                    <span class="title">Aceternity QA</span>
                     <span class="version">PLATFORM v1.0</span>
                 </div>
             </div>
 
-            <!-- Active Spec Indicator with Glow -->
+            <!-- Active Spec Indicator with Aceternity Glow -->
             <div class="active-spec-card" id="active-spec-info">
                 <div class="spec-label">ACTIVE API SPEC</div>
                 <div class="spec-title" id="sidebar-spec-title">No API Loaded</div>
@@ -65,10 +65,10 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Top Header with Magic UI Gradient Text -->
+            <!-- Top Header with Aceternity Hero Title & Shimmer Glow -->
             <header class="top-header">
                 <div class="page-header-info">
-                    <h1 id="page-title" class="magic-gradient-text">Quality Assurance Dashboard</h1>
+                    <h1 id="page-title" class="aceternity-title">Quality Assurance Dashboard</h1>
                     <p id="page-description">Overview of loaded API specifications, test scenarios, and execution pass rates.</p>
                 </div>
                 <div class="header-actions">
@@ -162,7 +162,7 @@
                         </div>
 
                         <!-- Parsed Spec Details View -->
-                        <div class="card spec-details-card hidden" id="spec-parsed-view" style="margin-top: 1.5rem; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: 1.5rem;">
+                        <div class="card spec-details-card hidden" id="spec-parsed-view" style="margin-top: 1.5rem; background: var(--bg-card); border: 1px solid var(--border-slate); border-radius: var(--radius-xl); padding: 1.5rem;">
                             <div class="spec-header-flex" style="display:flex; justify-content:space-between; align-items:center;">
                                 <div>
                                     <h2 id="view-spec-title" style="font-size:1.4rem;">API Title</h2>
@@ -234,7 +234,7 @@
                 <section class="tab-screen" id="screen-execution">
                     <div class="execution-control-card">
                         <div class="input-group">
-                            <label style="font-weight:600; font-size:0.88rem;">Target API Base URL:</label>
+                            <label style="font-weight:700; font-size:0.88rem;">Target API Base URL:</label>
                             <input type="text" id="exec-target-url" class="form-input" value="http://localhost:8000" placeholder="https://api.example.com">
                         </div>
                         <button class="btn btn-success" id="btn-run-execution" style="padding:0.75rem 1.5rem;"><i data-lucide="play-circle"></i> Run Test Suite</button>
@@ -269,8 +269,8 @@
                         </div>
                     </div>
 
-                    <div class="evidence-viewer-wrap" style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: 0.5rem; overflow: hidden;">
-                        <iframe id="report-iframe" title="Evidence Report Viewer" style="width: 100%; height: 600px; border: none; border-radius: var(--radius-md);"></iframe>
+                    <div class="evidence-viewer-wrap" style="background: var(--bg-card); border: 1px solid var(--border-slate); border-radius: var(--radius-xl); padding: 0.5rem; overflow: hidden;">
+                        <iframe id="report-iframe" title="Evidence Report Viewer" style="width: 100%; height: 600px; border: none; border-radius: var(--radius-lg);"></iframe>
                     </div>
                 </section>
 
