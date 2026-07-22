@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI QA Testing Agent Platform</title>
-    <!-- Inter Font -->
+    <title>AI QA Testing Agent Platform - Magic UI</title>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- CSS -->
+    <!-- Magic UI CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="app-layout">
-        <!-- Sidebar Navigation -->
+        <!-- Magic UI Sidebar Navigation -->
         <aside class="sidebar">
             <div class="brand">
-                <div class="logo-icon"><i data-lucide="bot"></i></div>
+                <div class="logo-icon"><i data-lucide="sparkles"></i></div>
                 <div class="brand-text">
-                    <span class="title">AI QA Agent</span>
-                    <span class="version">Platform v1.0</span>
+                    <span class="title">Magic AI QA</span>
+                    <span class="version">PLATFORM v1.0</span>
                 </div>
             </div>
 
-            <!-- Active Spec Indicator -->
+            <!-- Active Spec Indicator with Glow -->
             <div class="active-spec-card" id="active-spec-info">
                 <div class="spec-label">ACTIVE API SPEC</div>
                 <div class="spec-title" id="sidebar-spec-title">No API Loaded</div>
@@ -58,17 +58,17 @@
             <div class="sidebar-footer">
                 <div class="status-indicator">
                     <span class="dot"></span>
-                    <span>AI Engine Ready</span>
+                    <span>AI Engine Active</span>
                 </div>
             </div>
         </aside>
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Top Header -->
+            <!-- Top Header with Magic UI Gradient Text -->
             <header class="top-header">
                 <div class="page-header-info">
-                    <h1 id="page-title">Quality Assurance Dashboard</h1>
+                    <h1 id="page-title" class="magic-gradient-text">Quality Assurance Dashboard</h1>
                     <p id="page-description">Overview of loaded API specifications, test scenarios, and execution pass rates.</p>
                 </div>
                 <div class="header-actions">
@@ -80,7 +80,7 @@
             <!-- Tab Content Screens -->
             <div class="tab-contents">
 
-                <!-- 1. DASHBOARD SCREEN -->
+                <!-- 1. DASHBOARD BENTO GRID -->
                 <section class="tab-screen active" id="screen-dashboard">
                     <div class="metrics-grid">
                         <div class="metric-card">
@@ -162,17 +162,17 @@
                         </div>
 
                         <!-- Parsed Spec Details View -->
-                        <div class="card spec-details-card hidden" id="spec-parsed-view">
-                            <div class="spec-header-flex">
+                        <div class="card spec-details-card hidden" id="spec-parsed-view" style="margin-top: 1.5rem; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: 1.5rem;">
+                            <div class="spec-header-flex" style="display:flex; justify-content:space-between; align-items:center;">
                                 <div>
-                                    <h2 id="view-spec-title">API Title</h2>
+                                    <h2 id="view-spec-title" style="font-size:1.4rem;">API Title</h2>
                                     <span class="badge badge-info" id="view-spec-version">v1.0</span>
                                     <span class="text-muted" id="view-spec-baseurl">http://localhost:8000</span>
                                 </div>
                                 <button class="btn btn-primary" id="btn-proceed-risk"><i data-lucide="shield-check"></i> Analyze Risk Now</button>
                             </div>
 
-                            <div class="endpoints-list-wrap">
+                            <div class="endpoints-list-wrap" style="margin-top: 1.25rem;">
                                 <h3>Detected Endpoints (<span id="view-endpoint-count">0</span>)</h3>
                                 <div class="endpoints-tree" id="endpoints-tree"></div>
                             </div>
@@ -234,10 +234,10 @@
                 <section class="tab-screen" id="screen-execution">
                     <div class="execution-control-card">
                         <div class="input-group">
-                            <label>Target API Base URL:</label>
+                            <label style="font-weight:600; font-size:0.88rem;">Target API Base URL:</label>
                             <input type="text" id="exec-target-url" class="form-input" value="http://localhost:8000" placeholder="https://api.example.com">
                         </div>
-                        <button class="btn btn-success btn-large" id="btn-run-execution"><i data-lucide="play-circle"></i> Run Test Suite</button>
+                        <button class="btn btn-success" id="btn-run-execution" style="padding:0.75rem 1.5rem;"><i data-lucide="play-circle"></i> Run Test Suite</button>
                     </div>
 
                     <!-- Progress Bar -->
@@ -259,18 +259,18 @@
 
                 <!-- 6. EVIDENCE & HISTORY SCREEN -->
                 <section class="tab-screen" id="screen-evidence">
-                    <div class="evidence-toolbar">
-                        <select id="select-history-run" class="form-select" style="min-width: 250px;">
+                    <div class="evidence-toolbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                        <select id="select-history-run" class="form-select" style="min-width: 280px;">
                             <option value="">Select Execution Run</option>
                         </select>
-                        <div class="export-actions">
+                        <div class="export-actions" style="display:flex; gap:0.75rem;">
                             <button class="btn btn-secondary" id="btn-export-html"><i data-lucide="code"></i> View HTML Report</button>
                             <button class="btn btn-primary" id="btn-export-md"><i data-lucide="download"></i> Download Markdown Report</button>
                         </div>
                     </div>
 
-                    <div class="evidence-viewer-wrap card">
-                        <iframe id="report-iframe" title="Evidence Report Viewer" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
+                    <div class="evidence-viewer-wrap" style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: 0.5rem; overflow: hidden;">
+                        <iframe id="report-iframe" title="Evidence Report Viewer" style="width: 100%; height: 600px; border: none; border-radius: var(--radius-md);"></iframe>
                     </div>
                 </section>
 
