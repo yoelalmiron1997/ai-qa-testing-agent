@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI QA Testing Agent Platform</title>
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <!-- Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,100 +16,86 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="app-layout">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="logo-icon"><i data-lucide="bot"></i></div>
-                <div class="brand-text">
-                    <span class="title">AI QA Agent</span>
-                    <span class="version">PLATFORM v1.0</span>
+    <div class="craft-app">
+        <!-- Top Floating Navigation Dock (Emil Kowalski / Vercel style) -->
+        <header class="top-nav-dock">
+            <div class="dock-left">
+                <div class="dock-brand">
+                    <div class="brand-avatar"><i data-lucide="bot"></i></div>
+                    <div class="brand-name">AI QA Agent</div>
+                </div>
+                <div class="active-spec-pill" id="active-spec-info">
+                    <span class="dot-status"></span>
+                    <span id="sidebar-spec-title">No Spec Loaded</span>
                 </div>
             </div>
 
-            <!-- Active Spec Indicator -->
-            <div class="active-spec-card" id="active-spec-info">
-                <div class="spec-label">ACTIVE API SPEC</div>
-                <div class="spec-title" id="sidebar-spec-title">No API Loaded</div>
-                <div class="spec-meta" id="sidebar-spec-meta">Upload a spec to begin</div>
-            </div>
-
-            <nav class="nav-menu">
-                <button class="nav-item active" data-tab="dashboard">
+            <!-- Center Navigation Pills -->
+            <nav class="dock-center-nav">
+                <button class="nav-pill active" data-tab="dashboard">
                     <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
                 </button>
-                <button class="nav-item" data-tab="import">
-                    <i data-lucide="file-up"></i> <span>Import API</span>
+                <button class="nav-pill" data-tab="import">
+                    <i data-lucide="file-up"></i> <span>Import Spec</span>
                 </button>
-                <button class="nav-item" data-tab="risk">
-                    <i data-lucide="shield-alert"></i> <span>Risk Analysis</span>
+                <button class="nav-pill" data-tab="risk">
+                    <i data-lucide="shield-alert"></i> <span>Risk Matrix</span>
                 </button>
-                <button class="nav-item" data-tab="testcases">
-                    <i data-lucide="list-checks"></i> <span>Test Case Generator</span>
+                <button class="nav-pill" data-tab="testcases">
+                    <i data-lucide="list-checks"></i> <span>Test Generator</span>
                 </button>
-                <button class="nav-item" data-tab="execution">
-                    <i data-lucide="play-circle"></i> <span>Execution & AI Diagnosis</span>
+                <button class="nav-pill" data-tab="execution">
+                    <i data-lucide="play-circle"></i> <span>Execution</span>
                 </button>
-                <button class="nav-item" data-tab="evidence">
-                    <i data-lucide="file-text"></i> <span>Evidence & History</span>
+                <button class="nav-pill" data-tab="evidence">
+                    <i data-lucide="file-text"></i> <span>Evidence</span>
                 </button>
             </nav>
 
-            <div class="sidebar-footer">
-                <div class="status-indicator">
-                    <span class="dot"></span>
-                    <span>AI Engine Ready</span>
-                </div>
+            <!-- Right Action Buttons -->
+            <div class="dock-right">
+                <button class="btn btn-ghost" id="btn-quick-sample">
+                    <i data-lucide="sparkles"></i> <span>Load Sample</span>
+                </button>
+                <button class="btn btn-craft-primary" id="btn-global-run">
+                    <i data-lucide="play"></i> <span>Run Suite</span>
+                </button>
             </div>
-        </aside>
+        </header>
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- Top Header -->
-            <header class="top-header">
-                <div class="page-header-info">
+        <!-- Main Body Workspace -->
+        <main class="craft-workspace">
+            <div class="page-title-banner">
+                <div>
                     <h1 id="page-title">Quality Assurance Dashboard</h1>
                     <p id="page-description">Overview of loaded API specifications, test scenarios, and execution pass rates.</p>
                 </div>
-                <div class="header-actions">
-                    <button class="btn btn-secondary" id="btn-quick-sample"><i data-lucide="sparkles"></i> Load Petstore Sample</button>
-                    <button class="btn btn-primary" id="btn-global-run"><i data-lucide="play"></i> Run Tests</button>
-                </div>
-            </header>
+            </div>
 
             <!-- Tab Content Screens -->
             <div class="tab-contents">
 
-                <!-- 1. DASHBOARD SCREEN -->
+                <!-- 1. DASHBOARD -->
                 <section class="tab-screen active" id="screen-dashboard">
                     <div class="metrics-grid">
                         <div class="metric-card">
-                            <div class="metric-info">
-                                <span class="label">APIs Loaded</span>
-                                <div class="value" id="dash-total-apis">0</div>
-                            </div>
+                            <span class="label">APIs Loaded</span>
+                            <div class="value" id="dash-total-apis">0</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-info">
-                                <span class="label">Endpoints</span>
-                                <div class="value" id="dash-total-endpoints">0</div>
-                            </div>
+                            <span class="label">Endpoints</span>
+                            <div class="value" id="dash-total-endpoints">0</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-info">
-                                <span class="label">Test Scenarios</span>
-                                <div class="value" id="dash-total-tests">0</div>
-                            </div>
+                            <span class="label">Test Scenarios</span>
+                            <div class="value" id="dash-total-tests">0</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-info">
-                                <span class="label">Overall Pass Rate</span>
-                                <div class="value green-text" id="dash-pass-rate">0%</div>
-                            </div>
+                            <span class="label">Overall Pass Rate</span>
+                            <div class="value green-text" id="dash-pass-rate">0%</div>
                         </div>
                     </div>
 
-                    <!-- Charts Grid -->
                     <div class="charts-grid">
                         <div class="chart-card">
                             <h3>Test Outcome Distribution</h3>
@@ -125,7 +111,6 @@
                         </div>
                     </div>
 
-                    <!-- Recent Executions Table -->
                     <div class="card-table-wrap">
                         <h3>Recent Execution Runs</h3>
                         <table class="data-table" id="table-recent-runs">
@@ -146,56 +131,53 @@
                     </div>
                 </section>
 
-                <!-- 2. IMPORT API SCREEN -->
+                <!-- 2. IMPORT SPEC -->
                 <section class="tab-screen" id="screen-import">
                     <div class="import-container">
                         <div class="upload-zone" id="drop-zone">
                             <i data-lucide="upload-cloud" class="upload-icon"></i>
-                            <h3 style="font-weight:600; font-size:1rem; margin-bottom:0.25rem;">Upload OpenAPI or Swagger Specification</h3>
-                            <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:1rem;">Drag and drop your <code>openapi.json</code>, <code>swagger.json</code>, or <code>.yaml</code> file here</p>
+                            <h3>Upload OpenAPI or Swagger Specification</h3>
+                            <p>Drag and drop your <code>openapi.json</code>, <code>swagger.json</code>, or <code>.yaml</code> file here</p>
                             <input type="file" id="file-input" accept=".json,.yaml,.yml" style="display:none;">
-                            <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()"><i data-lucide="file-plus"></i> Browse File</button>
+                            <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()"><i data-lucide="file-plus"></i> Browse File</button>
                         </div>
 
-                        <!-- Parsed Spec Details View -->
-                        <div class="card spec-details-card hidden" id="spec-parsed-view" style="margin-top: 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <div class="spec-header-flex" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="card spec-details-card hidden" id="spec-parsed-view">
+                            <div class="spec-header-flex">
                                 <div>
-                                    <h2 id="view-spec-title" style="font-size:1.2rem; font-weight:600;">API Title</h2>
+                                    <h2 id="view-spec-title">API Title</h2>
                                     <span class="badge badge-info" id="view-spec-version">v1.0</span>
-                                    <span class="text-muted" id="view-spec-baseurl" style="font-size:0.83rem;">http://localhost:8000</span>
+                                    <span class="text-muted" id="view-spec-baseurl">http://localhost:8000</span>
                                 </div>
-                                <button class="btn btn-primary" id="btn-proceed-risk"><i data-lucide="shield-check"></i> Analyze Risk Now</button>
+                                <button class="btn btn-craft-primary" id="btn-proceed-risk"><i data-lucide="shield-check"></i> Analyze Risk</button>
                             </div>
 
-                            <div class="endpoints-list-wrap" style="margin-top: 1rem;">
-                                <h3 style="font-size:0.9rem; font-weight:600;">Detected Endpoints (<span id="view-endpoint-count">0</span>)</h3>
+                            <div class="endpoints-list-wrap">
+                                <h3>Detected Endpoints (<span id="view-endpoint-count">0</span>)</h3>
                                 <div class="endpoints-tree" id="endpoints-tree"></div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- 3. RISK ANALYSIS SCREEN -->
+                <!-- 3. RISK MATRIX -->
                 <section class="tab-screen" id="screen-risk">
                     <div class="risk-overview-card">
                         <div class="risk-badge-large" id="risk-overall-badge">MEDIUM RISK</div>
-                        <div class="risk-summary-info" style="flex-grow:1;">
-                            <h2 style="font-size:1.1rem; font-weight:600;">AI Risk Assessment Summary</h2>
-                            <p id="risk-summary-text" style="font-size:0.85rem; color:var(--text-secondary);">Select an API spec to analyze security sensitivities, authentication, and user input mutation vectors.</p>
+                        <div class="risk-summary-info">
+                            <h2>AI Risk Assessment Summary</h2>
+                            <p id="risk-summary-text">Select an API spec to analyze security sensitivities, authentication, and user input mutation vectors.</p>
                         </div>
-                        <button class="btn btn-primary" id="btn-reanalyze-risk"><i data-lucide="refresh-cw"></i> Re-Analyze</button>
+                        <button class="btn btn-craft-primary" id="btn-reanalyze-risk"><i data-lucide="refresh-cw"></i> Re-Analyze</button>
                     </div>
 
-                    <div class="endpoints-risk-grid" id="risk-cards-grid">
-                        <!-- Risk cards injected dynamically -->
-                    </div>
+                    <div class="endpoints-risk-grid" id="risk-cards-grid"></div>
                 </section>
 
-                <!-- 4. TEST CASE GENERATOR SCREEN -->
+                <!-- 4. TEST GENERATOR -->
                 <section class="tab-screen" id="screen-testcases">
                     <div class="testcases-toolbar">
-                        <div class="filters" style="display:flex; gap:0.6rem;">
+                        <div class="filters">
                             <select id="filter-category" class="form-select">
                                 <option value="">All Categories (9)</option>
                                 <option value="Functional">Functional</option>
@@ -218,25 +200,22 @@
                             </select>
                         </div>
 
-                        <button class="btn btn-primary" id="btn-generate-cases"><i data-lucide="sparkles"></i> Generate AI Test Suite</button>
+                        <button class="btn btn-craft-primary" id="btn-generate-cases"><i data-lucide="sparkles"></i> Generate AI Test Suite</button>
                     </div>
 
-                    <div class="testcases-grid" id="testcases-list">
-                        <!-- Test case cards injected dynamically -->
-                    </div>
+                    <div class="testcases-grid" id="testcases-list"></div>
                 </section>
 
-                <!-- 5. EXECUTION & AI DIAGNOSIS SCREEN -->
+                <!-- 5. EXECUTION -->
                 <section class="tab-screen" id="screen-execution">
                     <div class="execution-control-card">
                         <div class="input-group">
-                            <label style="font-weight:600; font-size:0.83rem; color:var(--text-secondary);">Target API Base URL:</label>
+                            <label>Target API Base URL:</label>
                             <input type="text" id="exec-target-url" class="form-input" value="http://localhost:8000" placeholder="https://api.example.com">
                         </div>
                         <button class="btn btn-success" id="btn-run-execution"><i data-lucide="play-circle"></i> Run Test Suite</button>
                     </div>
 
-                    <!-- Progress Bar -->
                     <div class="progress-bar-wrap hidden" id="exec-progress-wrap">
                         <div class="progress-info">
                             <span id="exec-progress-status">Running Tests...</span>
@@ -247,26 +226,23 @@
                         </div>
                     </div>
 
-                    <!-- Live Results List -->
-                    <div class="execution-results-list" id="exec-results-list">
-                        <!-- Execution result cards with AI defect analysis injected dynamically -->
-                    </div>
+                    <div class="execution-results-list" id="exec-results-list"></div>
                 </section>
 
-                <!-- 6. EVIDENCE & HISTORY SCREEN -->
+                <!-- 6. EVIDENCE -->
                 <section class="tab-screen" id="screen-evidence">
-                    <div class="evidence-toolbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
-                        <select id="select-history-run" class="form-select" style="min-width: 280px;">
+                    <div class="evidence-toolbar">
+                        <select id="select-history-run" class="form-select">
                             <option value="">Select Execution Run</option>
                         </select>
-                        <div class="export-actions" style="display:flex; gap:0.65rem;">
-                            <button class="btn btn-secondary" id="btn-export-html"><i data-lucide="code"></i> View HTML Report</button>
-                            <button class="btn btn-primary" id="btn-export-md"><i data-lucide="download"></i> Download Markdown Report</button>
+                        <div class="export-actions">
+                            <button class="btn btn-ghost" id="btn-export-html"><i data-lucide="code"></i> View HTML Report</button>
+                            <button class="btn btn-craft-primary" id="btn-export-md"><i data-lucide="download"></i> Download Markdown</button>
                         </div>
                     </div>
 
-                    <div class="evidence-viewer-wrap" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.5rem; overflow: hidden;">
-                        <iframe id="report-iframe" title="Evidence Report Viewer" style="width: 100%; height: 600px; border: none; border-radius: var(--radius-sm);"></iframe>
+                    <div class="evidence-viewer-wrap">
+                        <iframe id="report-iframe" title="Evidence Report Viewer"></iframe>
                     </div>
                 </section>
 

@@ -1,14 +1,14 @@
 /* 
- * Crafted UI - Emil Kowalski & Impeccable Taste Design System
- * Restrained Monochrome Palette, Precision Typography, Tactile Micro-Interactions
+ * Emil Kowalski & Vercel Dock Navigation UI
+ * Pitch Black Base (#09090b), Floating Nav Dock, Tactile Buttons & Spring Animations
  */
 
 :root {
-    --bg-base: #09090b;
-    --bg-sidebar: #0d0d10;
+    --bg-dark: #09090b;
+    --bg-dock: rgba(18, 18, 21, 0.85);
     --bg-panel: #121215;
     --bg-card: #18181b;
-    --bg-card-hover: #202024;
+    --bg-hover: #242429;
     
     --border-subtle: #27272a;
     --border-strong: #3f3f46;
@@ -21,14 +21,18 @@
     --accent-rose: #f43f5e;
     --accent-amber: #f59e0b;
     --accent-indigo: #6366f1;
-    --accent-zinc: #e4e4e7;
+    --accent-zinc: #fafafa;
     
-    --radius-sm: 6px;
-    --radius-md: 8px;
+    --radius-pill: 9999px;
     --radius-lg: 12px;
+    --radius-md: 8px;
+    --radius-sm: 6px;
+    
+    --shadow-dock: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.25);
     
     --transition-fast: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-spring: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 * {
@@ -40,7 +44,7 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-base);
+    background-color: var(--bg-dark);
     color: var(--text-primary);
     line-height: 1.5;
     overflow-x: hidden;
@@ -52,35 +56,44 @@ code, pre {
     font-size: 0.85em;
 }
 
-/* Layout */
-.app-layout {
+.craft-app {
     display: flex;
+    flex-direction: column;
     height: 100vh;
     overflow: hidden;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 260px;
-    background: var(--bg-sidebar);
-    border-right: 1px solid var(--border-subtle);
-    display: flex;
-    flex-direction: column;
-    padding: 1.25rem 1rem;
-    flex-shrink: 0;
-}
-
-.brand {
+/* Floating Top Navigation Dock */
+.top-nav-dock {
+    height: 64px;
+    background: var(--bg-dock);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border-subtle);
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-dock);
 }
 
-.logo-icon {
-    width: 34px;
-    height: 34px;
+.dock-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dock-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.brand-avatar {
+    width: 32px;
+    height: 32px;
     background: #18181b;
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-md);
@@ -90,197 +103,124 @@ code, pre {
     color: var(--text-primary);
 }
 
-.brand-text .title {
+.brand-name {
     font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-}
-
-.brand-text .version {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-/* Active Spec Card */
-.active-spec-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 0.85rem;
-    margin: 1rem 0;
-    transition: var(--transition-fast);
-}
-
-.active-spec-card .spec-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-}
-
-.active-spec-card .spec-title {
-    font-size: 0.88rem;
-    font-weight: 600;
-    margin-top: 0.15rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.92rem;
     color: var(--text-primary);
 }
 
-.active-spec-card .spec-meta {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
-
-/* Nav Items */
-.nav-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    flex-grow: 1;
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.55rem 0.75rem;
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-secondary);
-    font-size: 0.88rem;
-    font-weight: 500;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: var(--transition-fast);
-    text-align: left;
-}
-
-.nav-item i {
-    width: 16px;
-    height: 16px;
-    color: var(--text-muted);
-    transition: var(--transition-fast);
-}
-
-.nav-item:hover {
-    background: var(--bg-card);
-    color: var(--text-primary);
-}
-
-.nav-item:hover i {
-    color: var(--text-primary);
-}
-
-.nav-item.active {
-    background: #27272a;
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.nav-item.active i {
-    color: var(--text-primary);
-}
-
-.sidebar-footer {
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-subtle);
-}
-
-.status-indicator {
+.active-spec-pill {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
     font-size: 0.78rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
 }
 
-.status-indicator .dot {
+.dot-status {
     width: 6px;
     height: 6px;
     background-color: var(--accent-emerald);
     border-radius: 50%;
 }
 
-/* Main Content Area */
-.main-content {
-    flex-grow: 1;
+/* Center Pill Nav Bar */
+.dock-center-nav {
     display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    background-color: var(--bg-base);
-}
-
-.top-header {
-    padding: 1.25rem 2rem;
-    background: var(--bg-base);
-    border-bottom: 1px solid var(--border-subtle);
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 5;
+    gap: 0.35rem;
+    background: #121215;
+    padding: 0.3rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
 }
 
-.page-header-info h1 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
+.nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.83rem;
+    font-weight: 500;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: var(--transition-fast);
 }
 
-.page-header-info p {
-    font-size: 0.82rem;
+.nav-pill i {
+    width: 15px;
+    height: 15px;
     color: var(--text-muted);
 }
 
-.header-actions {
-    display: flex;
-    gap: 0.65rem;
+.nav-pill:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-/* Buttons - Emil Kowalski Tactile Style */
+.nav-pill.active {
+    background: #27272a;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.nav-pill.active i {
+    color: #ffffff;
+}
+
+.dock-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* Handcrafted Tactile Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.45rem 0.9rem;
+    padding: 0.45rem 0.95rem;
     font-size: 0.83rem;
     font-weight: 500;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-pill);
     border: 1px solid transparent;
     cursor: pointer;
     transition: var(--transition-fast);
 }
 
 .btn:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
 }
 
-.btn-primary {
+.btn-craft-primary {
     background: var(--accent-zinc);
     color: #09090b;
     font-weight: 600;
     border-color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-.btn-primary:hover {
+.btn-craft-primary:hover {
     background: #ffffff;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
 }
 
-.btn-secondary {
+.btn-ghost {
     background: var(--bg-card);
     border-color: var(--border-subtle);
     color: var(--text-primary);
 }
 
-.btn-secondary:hover {
-    background: var(--bg-card-hover);
+.btn-ghost:hover {
+    background: var(--bg-hover);
     border-color: var(--border-strong);
 }
 
@@ -294,8 +234,32 @@ code, pre {
     background: #34d399;
 }
 
+/* Workspace */
+.craft-workspace {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.page-title-banner {
+    padding: 1.5rem 2.5rem 0.5rem 2.5rem;
+}
+
+.page-title-banner h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.page-title-banner p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
 .tab-contents {
-    padding: 1.75rem 2rem;
+    padding: 1.5rem 2.5rem 2.5rem 2.5rem;
     flex-grow: 1;
 }
 
@@ -305,18 +269,18 @@ code, pre {
 
 .tab-screen.active {
     display: block;
-    animation: fadeIn 0.2s ease;
+    animation: craftSpringIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
+@keyframes craftSpringIn {
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Metrics Grid - Craft Style */
+/* Metrics Grid */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
@@ -324,19 +288,20 @@ code, pre {
 .metric-card {
     background: var(--bg-panel);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.1rem;
+    border-radius: var(--radius-lg);
+    padding: 1.1rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
     transition: var(--transition-fast);
 }
 
 .metric-card:hover {
     border-color: var(--border-strong);
+    transform: translateY(-2px);
 }
 
-.metric-info .label {
+.metric-card .label {
     font-size: 0.72rem;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -344,11 +309,11 @@ code, pre {
     font-weight: 600;
 }
 
-.metric-info .value {
-    font-size: 1.5rem;
+.metric-card .value {
+    font-size: 1.6rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-top: 0.1rem;
+    margin-top: 0.2rem;
 }
 
 .green-text { color: var(--accent-emerald); }
@@ -364,12 +329,12 @@ code, pre {
 .chart-card, .card-table-wrap {
     background: var(--bg-panel);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 1.1rem;
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
 }
 
 .chart-card h3, .card-table-wrap h3 {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     margin-bottom: 1rem;
     color: var(--text-primary);
     font-weight: 600;
@@ -414,8 +379,8 @@ code, pre {
     background-color: #121215 !important;
     border: 1px solid var(--border-subtle) !important;
     color: var(--text-primary) !important;
-    padding: 0.45rem 0.75rem !important;
-    border-radius: var(--radius-md) !important;
+    padding: 0.45rem 0.85rem !important;
+    border-radius: var(--radius-pill) !important;
     font-size: 0.83rem !important;
     outline: none !important;
     transition: var(--transition-fast) !important;
@@ -433,8 +398,8 @@ code, pre {
 /* Upload Zone */
 .upload-zone {
     border: 1px dashed var(--border-strong);
-    border-radius: var(--radius-md);
-    padding: 3.5rem 2rem;
+    border-radius: var(--radius-lg);
+    padding: 4rem 2rem;
     text-align: center;
     background: var(--bg-panel);
     transition: var(--transition-fast);
@@ -453,7 +418,6 @@ code, pre {
     margin-bottom: 0.75rem;
 }
 
-/* Endpoints List */
 .endpoints-tree {
     display: flex;
     flex-direction: column;
@@ -473,8 +437,8 @@ code, pre {
 
 /* Badges */
 .badge {
-    padding: 0.15rem 0.45rem;
-    border-radius: var(--radius-sm);
+    padding: 0.18rem 0.5rem;
+    border-radius: var(--radius-pill);
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -494,7 +458,7 @@ code, pre {
 .risk-overview-card {
     background: var(--bg-panel);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     padding: 1.25rem;
     display: flex;
     align-items: center;
@@ -506,7 +470,7 @@ code, pre {
     font-size: 0.95rem;
     font-weight: 700;
     padding: 0.5rem 0.9rem;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-pill);
     background: rgba(245, 158, 11, 0.12);
     color: #fbbf24;
     border: 1px solid rgba(245, 158, 11, 0.25);
@@ -521,13 +485,14 @@ code, pre {
 .risk-card, .tc-card, .result-item-card {
     background: var(--bg-panel);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     padding: 1.1rem;
     transition: var(--transition-fast);
 }
 
 .risk-card:hover, .tc-card:hover, .result-item-card:hover {
     border-color: var(--border-strong);
+    transform: translateY(-2px);
 }
 
 .risk-card-header, .tc-header {
@@ -540,19 +505,12 @@ code, pre {
 .execution-control-card {
     background: var(--bg-panel);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     padding: 1.25rem;
     display: flex;
     gap: 1.25rem;
     align-items: flex-end;
     margin-bottom: 1.5rem;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    flex-grow: 1;
 }
 
 .progress-bar-wrap {
@@ -586,12 +544,26 @@ code, pre {
     gap: 0.75rem;
 }
 
-.ai-defect-box {
-    background: rgba(244, 63, 94, 0.06);
-    border: 1px solid rgba(244, 63, 94, 0.2);
+.evidence-viewer-wrap {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 0.5rem;
+    overflow: hidden;
+}
+
+.evidence-viewer-wrap iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
     border-radius: var(--radius-md);
-    padding: 0.85rem;
-    margin-top: 0.85rem;
+}
+
+.testcases-toolbar, .evidence-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
 }
 
 .hidden { display: none !important; }

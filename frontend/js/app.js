@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // DOM Elements
-    const navItems = document.querySelectorAll(".nav-item");
+    const navItems = document.querySelectorAll(".nav-pill, .nav-item");
     const tabScreens = document.querySelectorAll(".tab-screen");
     const fileInput = document.getElementById("file-input");
     const dropZone = document.getElementById("drop-zone");
@@ -68,16 +68,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (dropZone) {
             dropZone.addEventListener("dragover", (e) => {
                 e.preventDefault();
-                dropZone.style.borderColor = "var(--aceternity-cyan)";
+                dropZone.style.borderColor = "var(--text-secondary)";
             });
 
             dropZone.addEventListener("dragleave", () => {
-                dropZone.style.borderColor = "var(--border-slate)";
+                dropZone.style.borderColor = "var(--border-strong)";
             });
 
             dropZone.addEventListener("drop", (e) => {
                 e.preventDefault();
-                dropZone.style.borderColor = "var(--border-slate)";
+                dropZone.style.borderColor = "var(--border-strong)";
                 if (e.dataTransfer.files.length > 0) {
                     handleFileUpload(e.dataTransfer.files[0]);
                 }
@@ -173,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function setActiveSpec(spec) {
         state.activeSpec = spec;
         document.getElementById("sidebar-spec-title").innerText = spec.title;
-        document.getElementById("sidebar-spec-meta").innerText = `${spec.endpoints_count} Endpoints | v${spec.version}`;
         if (document.getElementById("exec-target-url")) {
             document.getElementById("exec-target-url").value = spec.base_url || "http://localhost:8000";
         }
@@ -373,7 +372,7 @@ paths:
         });
 
         if (filtered.length === 0) {
-            grid.innerHTML = `<div class="card center text-muted" style="grid-column:1/-1; padding:2.5rem; background: var(--bg-card); border: 1px solid var(--border-slate); border-radius: var(--radius-xl);">No test cases match the active filter criteria. Click 'Generate AI Test Suite' to create scenarios.</div>`;
+            grid.innerHTML = `<div class="card center text-muted" style="grid-column:1/-1; padding:2.5rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">No test cases match the active filter criteria. Click 'Generate AI Test Suite' to create scenarios.</div>`;
             return;
         }
 
@@ -395,7 +394,7 @@ paths:
                     <strong>Endpoint:</strong> <code>${tc.endpoint}</code><br>
                     <strong>Objective:</strong> ${tc.objective}
                 </div>
-                <div style="background:#090d16; border:1px solid var(--border-slate); border-radius:6px; padding:0.5rem; font-size:0.78rem;">
+                <div style="background:#09090b; border:1px solid var(--border-subtle); border-radius:6px; padding:0.5rem; font-size:0.78rem;">
                     <strong>Expected Status:</strong> HTTP ${tc.expected_status}
                 </div>
             `;
@@ -417,7 +416,7 @@ paths:
 
         progressWrap.classList.remove("hidden");
         progressFill.style.width = "40%";
-        resultsList.innerHTML = `<div class="card center" style="padding:2.5rem; background: var(--bg-card); border: 1px solid var(--border-slate); border-radius: var(--radius-xl);"><i data-lucide="loader" class="spin"></i> Executing real HTTP scenarios against ${targetUrl}...</div>`;
+        resultsList.innerHTML = `<div class="card center" style="padding:2.5rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);"><i data-lucide="loader" class="spin"></i> Executing real HTTP scenarios against ${targetUrl}...</div>`;
         if (window.lucide) lucide.createIcons();
 
         try {
@@ -454,7 +453,7 @@ paths:
                 <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">
                     URL: <code>${res.request_url}</code>
                 </div>
-                ${res.error_details ? `<div style="font-size:0.85rem; color:var(--fail-rose); margin-top:0.3rem;">Error: ${res.error_details}</div>` : ''}
+                ${res.error_details ? `<div style="font-size:0.85rem; color:var(--accent-rose); margin-top:0.3rem;">Error: ${res.error_details}</div>` : ''}
             `;
             resultsList.appendChild(card);
         });
@@ -524,7 +523,7 @@ paths:
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: "#94a3b8" } } }
+                    plugins: { legend: { labels: { color: "#a1a1aa" } } }
                 }
             });
         }
@@ -537,7 +536,7 @@ paths:
                     datasets: [{
                         label: "Pass Rate (%)",
                         data: [],
-                        borderColor: "#06b6d4",
+                        borderColor: "#f4f4f5",
                         tension: 0.3,
                         fill: false
                     }]
@@ -546,10 +545,10 @@ paths:
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: { ticks: { color: "#64748b" }, grid: { color: "rgba(51, 65, 85, 0.4)" } },
-                        y: { min: 0, max: 100, ticks: { color: "#64748b" }, grid: { color: "rgba(51, 65, 85, 0.4)" } }
+                        x: { ticks: { color: "#71717a" }, grid: { color: "#27272a" } },
+                        y: { min: 0, max: 100, ticks: { color: "#71717a" }, grid: { color: "#27272a" } }
                     },
-                    plugins: { legend: { labels: { color: "#94a3b8" } } }
+                    plugins: { legend: { labels: { color: "#a1a1aa" } } }
                 }
             });
         }
