@@ -1,0 +1,23 @@
+name: Deploy Notification & Environment Status
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-status:
+    name: Mark Production Deployment Active
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Register GitHub Deployment
+        uses: chrindex/github-deployment-action@v2
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          environment: production
+          initial-status: success
+          target_url: https://ai-qa-testing-agent.onrender.com
+          description: Live Production Render Deployment
