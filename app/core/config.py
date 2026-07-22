@@ -1,8 +1,12 @@
 import os
+
 try:
     from pydantic_settings import BaseSettings
-except ImportError:
-    from pydantic import BaseSettings
+except Exception:
+    try:
+        from pydantic.v1 import BaseSettings
+    except Exception:
+        from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "AI QA Testing Agent"
