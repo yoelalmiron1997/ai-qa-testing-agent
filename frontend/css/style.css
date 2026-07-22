@@ -2,12 +2,12 @@
 :root {
     --bg-dark: #020617;
     --bg-surface: #090d16;
-    --bg-card: rgba(15, 23, 42, 0.7);
-    --bg-card-hover: rgba(30, 41, 59, 0.85);
+    --bg-card: rgba(15, 23, 42, 0.75);
+    --bg-card-hover: rgba(30, 41, 59, 0.9);
     
-    --border-slate: rgba(51, 65, 85, 0.5);
-    --border-cyan-glow: rgba(6, 182, 212, 0.4);
-    --border-indigo-glow: rgba(99, 102, 241, 0.4);
+    --border-slate: rgba(51, 65, 85, 0.6);
+    --border-cyan-glow: rgba(6, 182, 212, 0.45);
+    --border-indigo-glow: rgba(99, 102, 241, 0.45);
     
     --aceternity-cyan: #06b6d4;
     --aceternity-sky: #38bdf8;
@@ -26,7 +26,7 @@
     --radius-lg: 12px;
     --radius-md: 8px;
     
-    --shadow-aceternity: 0 0 35px -5px rgba(6, 182, 212, 0.18);
+    --shadow-aceternity: 0 0 35px -5px rgba(6, 182, 212, 0.2);
     --transition-fast: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -43,7 +43,6 @@ body {
     color: var(--text-white);
     line-height: 1.5;
     overflow-x: hidden;
-    /* Aceternity Animated Spotlight & Grid Background */
     background-image: 
         radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15) 0%, rgba(99, 102, 241, 0.08) 35%, transparent 70%),
         linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
@@ -118,9 +117,9 @@ code, pre {
     letter-spacing: 0.06em;
 }
 
-/* Active Spec Card with Aceternity Border Glow */
+/* Active Spec Card */
 .active-spec-card {
-    background: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.75);
     backdrop-filter: blur(12px);
     border: 1px solid var(--border-cyan-glow);
     border-radius: var(--radius-lg);
@@ -166,7 +165,7 @@ code, pre {
     color: var(--text-muted);
 }
 
-/* Aceternity Navigation Items */
+/* Navigation Items */
 .nav-menu {
     display: flex;
     flex-direction: column;
@@ -247,7 +246,7 @@ code, pre {
 
 .top-header {
     padding: 1.5rem 2rem;
-    background: rgba(2, 6, 23, 0.7);
+    background: rgba(2, 6, 23, 0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-slate);
     display: flex;
@@ -258,7 +257,6 @@ code, pre {
     z-index: 5;
 }
 
-/* Aceternity Hero Text & Shimmer Title */
 .aceternity-title {
     font-size: 1.65rem;
     font-weight: 900;
@@ -279,7 +277,31 @@ code, pre {
     gap: 0.85rem;
 }
 
-/* Aceternity Animated Buttons */
+/* Form Controls Fix (Strict Aceternity Dark Inputs & Select Options) */
+.form-select, .form-input {
+    background-color: #0f172a !important;
+    border: 1px solid var(--border-cyan-glow) !important;
+    color: #f8fafc !important;
+    padding: 0.65rem 1rem !important;
+    border-radius: var(--radius-lg) !important;
+    font-size: 0.88rem !important;
+    outline: none !important;
+    transition: var(--transition-fast) !important;
+    box-shadow: 0 0 15px rgba(15, 23, 42, 0.5) !important;
+}
+
+.form-select option {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    padding: 0.5rem !important;
+}
+
+.form-select:focus, .form-input:focus {
+    border-color: var(--aceternity-cyan) !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3) !important;
+}
+
+/* Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -348,7 +370,7 @@ code, pre {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Aceternity Bento Grid Cards */
+/* Bento Cards */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -406,7 +428,6 @@ code, pre {
 
 .green-text { color: var(--pass-emerald); }
 
-/* Bento Charts Grid */
 .charts-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -440,7 +461,6 @@ code, pre {
     width: 100%;
 }
 
-/* Bento Tables */
 .card-table-wrap {
     background: var(--bg-card);
     backdrop-filter: blur(16px);
@@ -483,7 +503,6 @@ code, pre {
     color: var(--text-white);
 }
 
-/* Aceternity Upload Spotlight Zone */
 .upload-zone {
     border: 2px dashed rgba(6, 182, 212, 0.4);
     border-radius: var(--radius-xl);
@@ -515,7 +534,6 @@ code, pre {
     50% { transform: translateY(-8px); }
 }
 
-/* Endpoints Tree */
 .endpoints-tree {
     display: flex;
     flex-direction: column;
@@ -539,7 +557,6 @@ code, pre {
     transform: translateX(4px);
 }
 
-/* Badges */
 .badge {
     padding: 0.25rem 0.65rem;
     border-radius: var(--radius-md);
@@ -558,7 +575,6 @@ code, pre {
 .badge-fail { background: rgba(244, 63, 94, 0.15); color: var(--fail-rose); border: 1px solid var(--fail-rose); box-shadow: 0 0 10px rgba(244, 63, 94, 0.2); }
 .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warn-amber); border: 1px solid var(--warn-amber); }
 
-/* Risk Overview Card */
 .risk-overview-card {
     background: var(--bg-card);
     backdrop-filter: blur(16px);
@@ -602,7 +618,6 @@ code, pre {
     transform: translateY(-3px);
 }
 
-/* Test Cases Matrix Grid */
 .testcases-toolbar {
     display: flex;
     justify-content: space-between;
@@ -641,7 +656,6 @@ code, pre {
     margin-bottom: 0.75rem;
 }
 
-/* Execution View & Live Stream */
 .execution-control-card {
     background: var(--bg-card);
     backdrop-filter: blur(16px);

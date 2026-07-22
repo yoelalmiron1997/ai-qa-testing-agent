@@ -11,6 +11,34 @@ document.addEventListener("DOMContentLoaded", () => {
         charts: {}
     };
 
+    // Tab Headers Text
+    const tabHeaders = {
+        dashboard: {
+            title: "Quality Assurance Dashboard",
+            description: "Overview of loaded API specifications, test scenarios, and execution pass rates."
+        },
+        import: {
+            title: "Import OpenAPI Specification",
+            description: "Upload or inspect OpenAPI (JSON/YAML) specs, endpoints, and request schemas."
+        },
+        risk: {
+            title: "Automated Risk Analysis",
+            description: "AI evaluation of endpoint security sensitivities, data mutations, and input vectors."
+        },
+        testcases: {
+            title: "AI Test Case Generator",
+            description: "Prioritized test scenarios generated across 9 QA testing categories."
+        },
+        execution: {
+            title: "HTTP Execution & AI Diagnosis",
+            description: "Real HTTP test runner with live response latency and AI root-cause defect analysis."
+        },
+        evidence: {
+            title: "Evidence Reports & History",
+            description: "Standalone HTML evidence reports, Markdown exports, and historical evolution."
+        }
+    };
+
     // DOM Elements
     const navItems = document.querySelectorAll(".nav-item");
     const tabScreens = document.querySelectorAll(".tab-screen");
@@ -40,16 +68,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (dropZone) {
             dropZone.addEventListener("dragover", (e) => {
                 e.preventDefault();
-                dropZone.style.borderColor = "var(--accent-blue)";
+                dropZone.style.borderColor = "var(--aceternity-cyan)";
             });
 
             dropZone.addEventListener("dragleave", () => {
-                dropZone.style.borderColor = "var(--border-color)";
+                dropZone.style.borderColor = "var(--border-slate)";
             });
 
             dropZone.addEventListener("drop", (e) => {
                 e.preventDefault();
-                dropZone.style.borderColor = "var(--border-color)";
+                dropZone.style.borderColor = "var(--border-slate)";
                 if (e.dataTransfer.files.length > 0) {
                     handleFileUpload(e.dataTransfer.files[0]);
                 }
@@ -97,6 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function switchTab(tabName) {
         state.activeTab = tabName;
+
+        // Dynamic Header Title Update
+        const headerData = tabHeaders[tabName] || tabHeaders.dashboard;
+        const pageTitleEl = document.getElementById("page-title");
+        const pageDescEl = document.getElementById("page-description");
+        if (pageTitleEl) pageTitleEl.innerText = headerData.title;
+        if (pageDescEl) pageDescEl.innerText = headerData.description;
 
         navItems.forEach(btn => {
             if (btn.getAttribute("data-tab") === tabName) {
@@ -338,7 +373,7 @@ paths:
         });
 
         if (filtered.length === 0) {
-            grid.innerHTML = `<div class="card center text-muted" style="grid-column:1/-1; padding:2rem;">No test cases match the active filter criteria. Click 'Generate AI Test Suite' to create scenarios.</div>`;
+            grid.innerHTML = `<div class="card center text-muted" style="grid-column:1/-1; padding:2.5rem; background: var(--bg-card); border: 1px solid var(--border-slate); border-radius: var(--radius-xl);">No test cases match the active filter criteria. Click 'Generate AI Test Suite' to create scenarios.</div>`;
             return;
         }
 
@@ -360,7 +395,7 @@ paths:
                     <strong>Endpoint:</strong> <code>${tc.endpoint}</code><br>
                     <strong>Objective:</strong> ${tc.objective}
                 </div>
-                <div style="background:#090a0d; border:1px solid var(--border-color); border-radius:4px; padding:0.5rem; font-size:0.78rem;">
+                <div style="background:#090d16; border:1px solid var(--border-slate); border-radius:6px; padding:0.5rem; font-size:0.78rem;">
                     <strong>Expected Status:</strong> HTTP ${tc.expected_status}
                 </div>
             `;
@@ -382,7 +417,7 @@ paths:
 
         progressWrap.classList.remove("hidden");
         progressFill.style.width = "40%";
-        resultsList.innerHTML = `<div class="card center" style="padding:2rem;"><i data-lucide="loader" class="spin"></i> Executing real HTTP scenarios against ${targetUrl}...</div>`;
+        resultsList.innerHTML = `<div class="card center" style="padding:2.5rem; background: var(--bg-card); border: 1px solid var(--border-slate); border-radius: var(--radius-xl);"><i data-lucide="loader" class="spin"></i> Executing real HTTP scenarios against ${targetUrl}...</div>`;
         if (window.lucide) lucide.createIcons();
 
         try {
@@ -394,7 +429,7 @@ paths:
             renderExecutionResults(run, results);
             refreshDashboard();
         } catch (err) {
-            resultsList.innerHTML = `<div class="card center badge-fail" style="padding:2rem;">Execution Error: ${err.message}</div>`;
+            resultsList.innerHTML = `<div class="card center badge-fail" style="padding:2.5rem;">Execution Error: ${err.message}</div>`;
         }
     }
 
@@ -419,7 +454,7 @@ paths:
                 <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">
                     URL: <code>${res.request_url}</code>
                 </div>
-                ${res.error_details ? `<div style="font-size:0.85rem; color:var(--fail-red); margin-top:0.3rem;">Error: ${res.error_details}</div>` : ''}
+                ${res.error_details ? `<div style="font-size:0.85rem; color:var(--fail-rose); margin-top:0.3rem;">Error: ${res.error_details}</div>` : ''}
             `;
             resultsList.appendChild(card);
         });
@@ -482,7 +517,7 @@ paths:
                     labels: ["Passed", "Failed"],
                     datasets: [{
                         data: [0, 0],
-                        backgroundColor: ["#10b981", "#ef4444"],
+                        backgroundColor: ["#10b981", "#f43f5e"],
                         borderWidth: 0
                     }]
                 },
@@ -502,7 +537,7 @@ paths:
                     datasets: [{
                         label: "Pass Rate (%)",
                         data: [],
-                        borderColor: "#3b82f6",
+                        borderColor: "#06b6d4",
                         tension: 0.3,
                         fill: false
                     }]
@@ -511,8 +546,8 @@ paths:
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: { ticks: { color: "#64748b" }, grid: { color: "#1e222d" } },
-                        y: { min: 0, max: 100, ticks: { color: "#64748b" }, grid: { color: "#1e222d" } }
+                        x: { ticks: { color: "#64748b" }, grid: { color: "rgba(51, 65, 85, 0.4)" } },
+                        y: { min: 0, max: 100, ticks: { color: "#64748b" }, grid: { color: "rgba(51, 65, 85, 0.4)" } }
                     },
                     plugins: { legend: { labels: { color: "#94a3b8" } } }
                 }
