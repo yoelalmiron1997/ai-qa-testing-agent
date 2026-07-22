@@ -7,21 +7,21 @@
     <!-- Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Crafted UI CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Light Sky Blue Crafted UI CSS -->
+    <link rel="stylesheet" href="/static/css/style.css?v=2.0">
 </head>
 <body>
     <div class="craft-app">
-        <!-- Top Floating Navigation Dock (Emil Kowalski / Vercel style) -->
+        <!-- Top Floating Navigation Dock (Light Sky Blue Accent) -->
         <header class="top-nav-dock">
             <div class="dock-left">
                 <div class="dock-brand">
-                    <div class="brand-avatar"><i data-lucide="bot"></i></div>
+                    <div class="brand-avatar"><i data-lucide="zap"></i></div>
                     <div class="brand-name">AI QA Agent</div>
                 </div>
                 <div class="active-spec-pill" id="active-spec-info">
@@ -143,7 +143,7 @@
                         </div>
 
                         <div class="card spec-details-card hidden" id="spec-parsed-view">
-                            <div class="spec-header-flex">
+                            <div class="spec-header-flex" style="display:flex; justify-content:space-between; align-items:center;">
                                 <div>
                                     <h2 id="view-spec-title">API Title</h2>
                                     <span class="badge badge-info" id="view-spec-version">v1.0</span>
@@ -210,7 +210,7 @@
                 <section class="tab-screen" id="screen-execution">
                     <div class="execution-control-card">
                         <div class="input-group">
-                            <label>Target API Base URL:</label>
+                            <label style="font-weight:700; font-size:0.83rem;">Target API Base URL:</label>
                             <input type="text" id="exec-target-url" class="form-input" value="http://localhost:8000" placeholder="https://api.example.com">
                         </div>
                         <button class="btn btn-success" id="btn-run-execution"><i data-lucide="play-circle"></i> Run Test Suite</button>
