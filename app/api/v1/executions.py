@@ -45,19 +45,36 @@ def execute_test_suite(payload: ExecutionRunCreate, db: Session = Depends(get_db
     total_latency = 0.0
 
     for tc in test_cases:
-        tc_dict = {
-            "id": tc.id,
-            "title": tc.title,
-            "category": tc.category,
-            "priority": tc.priority,
-            "endpoint": tc.endpoint,
-            "method": tc.method,
-            "headers": tc.headers,
-            "params": tc.params,
-            "body": tc.body,
-            "expected_status": tc.expected_status,
-            "expected_result": tc.expected_result
-        }
+        if isinstance(tc, dict):
+            tc_dict = {
+                "id": tc.get("id"),
+                "title": tc.get("title", "Generated Test Case"),
+                "category": tc.get("category", "Functional"),
+                "priority": tc.get("priority", "MEDIUM"),
+                "endpoint": tc.get("endpoint", "/"),
+                "method": tc.get("method", "GET"),
+                "headers": tc.get("headers"),
+                "params": tc.get("params"),
+                "body": tc.get("body"),
+                "expected_status": tc.get("expected_status", 200),
+                "expected_result": tc.get("expected_result", "200 OK")
+            }
+            tc_id = tc.get("id")
+        else:
+            tc_dict = {
+                "id": tc.id,
+                "title": tc.title,
+                "category": tc.category,
+                "priority": tc.priority,
+                "endpoint": tc.endpoint,
+                "method": tc.method,
+                "headers": tc.headers,
+                "params": tc.params,
+                "body": tc.body,
+                "expected_status": tc.expected_status,
+                "expected_result": tc.expected_result
+            }
+            tc_id = tc.id
 
         # Execute HTTP Request
         exec_res = qa_agent.execute_test(tc_dict, target_url)
@@ -74,7 +91,7 @@ def execute_test_suite(payload: ExecutionRunCreate, db: Session = Depends(get_db
         # Store test result
         result_model = TestResultModel(
             execution_run_id=saved_run.id,
-            test_case_id=tc.id,
+            test_case_id=tc_id,
             status=status,
             status_code=exec_res.get("status_code"),
             latency_ms=latency,

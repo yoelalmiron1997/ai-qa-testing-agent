@@ -40,8 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // DOM Elements
-    const navItems = document.querySelectorAll(".nav-pill, .nav-item");
-    const tabScreens = document.querySelectorAll(".tab-screen");
     const fileInput = document.getElementById("file-input");
     const dropZone = document.getElementById("drop-zone");
 
@@ -56,28 +54,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function bindEvents() {
-        // Tab switching
-        navItems.forEach(item => {
-            item.addEventListener("click", () => {
-                const tab = item.getAttribute("data-tab");
-                switchTab(tab);
-            });
+        // Tab switching event delegation
+        document.addEventListener("click", (e) => {
+            const navBtn = e.target.closest(".nav-pill, .nav-item");
+            if (navBtn) {
+                const tab = navBtn.getAttribute("data-tab");
+                if (tab) switchTab(tab);
+            }
         });
 
         // File upload drop zone
         if (dropZone) {
             dropZone.addEventListener("dragover", (e) => {
                 e.preventDefault();
-                dropZone.style.borderColor = "var(--text-secondary)";
+                dropZone.style.borderColor = "var(--sky-blue)";
             });
 
             dropZone.addEventListener("dragleave", () => {
-                dropZone.style.borderColor = "var(--border-strong)";
+                dropZone.style.borderColor = "var(--border-subtle)";
             });
 
             dropZone.addEventListener("drop", (e) => {
                 e.preventDefault();
-                dropZone.style.borderColor = "var(--border-strong)";
+                dropZone.style.borderColor = "var(--border-subtle)";
                 if (e.dataTransfer.files.length > 0) {
                     handleFileUpload(e.dataTransfer.files[0]);
                 }
@@ -133,7 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (pageTitleEl) pageTitleEl.innerText = headerData.title;
         if (pageDescEl) pageDescEl.innerText = headerData.description;
 
-        navItems.forEach(btn => {
+        const allNavBtns = document.querySelectorAll(".nav-pill, .nav-item");
+        allNavBtns.forEach(btn => {
             if (btn.getAttribute("data-tab") === tabName) {
                 btn.classList.add("active");
             } else {
@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        const tabScreens = document.querySelectorAll(".tab-screen");
         tabScreens.forEach(screen => {
             if (screen.id === `screen-${tabName}`) {
                 screen.classList.add("active");
@@ -172,9 +173,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setActiveSpec(spec) {
         state.activeSpec = spec;
-        document.getElementById("sidebar-spec-title").innerText = spec.title;
+        const specTitleEl = document.getElementById("sidebar-spec-title");
+        if (specTitleEl) specTitleEl.innerText = spec.title;
+
         if (document.getElementById("exec-target-url")) {
-            document.getElementById("exec-target-url").value = spec.base_url || "http://localhost:8000";
+            document.getElementById("exec-target-url").value = window.location.origin;
         }
         renderSpecDetails(spec);
     }
@@ -198,7 +201,7 @@ info:
   version: 1.0.0
   description: Sample API for testing Risk Analysis, Scenario Generation, and AI Defect Diagnosis.
 servers:
-  - url: http://localhost:8000
+  - url: ${window.location.origin}
 paths:
   /api/v1/auth/login:
     post:
@@ -258,7 +261,7 @@ paths:
         viewCard.classList.remove("hidden");
         document.getElementById("view-spec-title").innerText = spec.title;
         document.getElementById("view-spec-version").innerText = `v${spec.version}`;
-        document.getElementById("view-spec-baseurl").innerText = spec.base_url || "http://localhost:8000";
+        document.getElementById("view-spec-baseurl").innerText = spec.base_url || window.location.origin;
         document.getElementById("view-endpoint-count").innerText = spec.endpoints_count;
 
         const container = document.getElementById("endpoints-tree");
@@ -409,7 +412,7 @@ paths:
             return;
         }
 
-        const targetUrl = document.getElementById("exec-target-url").value || "http://localhost:8000";
+        const targetUrl = document.getElementById("exec-target-url").value || window.location.origin;
         const progressWrap = document.getElementById("exec-progress-wrap");
         const progressFill = document.getElementById("exec-progress-fill");
         const resultsList = document.getElementById("exec-results-list");
@@ -453,7 +456,7 @@ paths:
                 <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">
                     URL: <code>${res.request_url}</code>
                 </div>
-                ${res.error_details ? `<div style="font-size:0.85rem; color:var(--accent-rose); margin-top:0.3rem;">Error: ${res.error_details}</div>` : ''}
+                ${res.error_details ? `<div style="font-size:0.85rem; color:var(--fail-rose); margin-top:0.3rem;">Error: ${res.error_details}</div>` : ''}
             `;
             resultsList.appendChild(card);
         });
@@ -523,7 +526,7 @@ paths:
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: "#a1a1aa" } } }
+                    plugins: { legend: { labels: { color: "#cbd5e1" } } }
                 }
             });
         }
@@ -536,7 +539,7 @@ paths:
                     datasets: [{
                         label: "Pass Rate (%)",
                         data: [],
-                        borderColor: "#f4f4f5",
+                        borderColor: "#38bdf8",
                         tension: 0.3,
                         fill: false
                     }]
@@ -545,10 +548,10 @@ paths:
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: { ticks: { color: "#71717a" }, grid: { color: "#27272a" } },
-                        y: { min: 0, max: 100, ticks: { color: "#71717a" }, grid: { color: "#27272a" } }
+                        x: { ticks: { color: "#94a3b8" }, grid: { color: "rgba(51, 65, 85, 0.6)" } },
+                        y: { min: 0, max: 100, ticks: { color: "#94a3b8" }, grid: { color: "rgba(51, 65, 85, 0.6)" } }
                     },
-                    plugins: { legend: { labels: { color: "#a1a1aa" } } }
+                    plugins: { legend: { labels: { color: "#cbd5e1" } } }
                 }
             });
         }
