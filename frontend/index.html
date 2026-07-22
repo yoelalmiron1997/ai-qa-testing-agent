@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI QA Testing Agent Platform</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon"><i data-lucide="bot"></i></div>
+                <div class="brand-text">
+                    <span class="title">AI QA Agent</span>
+                    <span class="version">Platform v1.0</span>
+                </div>
+            </div>
+
+            <!-- Active Spec Indicator -->
+            <div class="active-spec-card" id="active-spec-info">
+                <div class="spec-label">ACTIVE API SPEC</div>
+                <div class="spec-title" id="sidebar-spec-title">No API Loaded</div>
+                <div class="spec-meta" id="sidebar-spec-meta">Upload a spec to begin</div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="import">
+                    <i data-lucide="file-up"></i> <span>Import API</span>
+                </button>
+                <button class="nav-item" data-tab="risk">
+                    <i data-lucide="shield-alert"></i> <span>Risk Analysis</span>
+                </button>
+                <button class="nav-item" data-tab="testcases">
+                    <i data-lucide="list-checks"></i> <span>Test Case Generator</span>
+                </button>
+                <button class="nav-item" data-tab="execution">
+                    <i data-lucide="play-circle"></i> <span>Execution & AI Diagnosis</span>
+                </button>
+                <button class="nav-item" data-tab="evidence">
+                    <i data-lucide="file-text"></i> <span>Evidence & History</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="dot"></span>
+                    <span>AI Engine Ready</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="page-header-info">
+                    <h1 id="page-title">Quality Assurance Dashboard</h1>
+                    <p id="page-description">Overview of loaded API specifications, test scenarios, and execution pass rates.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="btn-quick-sample"><i data-lucide="sparkles"></i> Load Petstore Sample</button>
+                    <button class="btn btn-primary" id="btn-global-run"><i data-lucide="play"></i> Run Tests</button>
+                </div>
+            </header>
+
+            <!-- Tab Content Screens -->
+            <div class="tab-contents">
+
+                <!-- 1. DASHBOARD SCREEN -->
+                <section class="tab-screen active" id="screen-dashboard">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="icon-wrap blue"><i data-lucide="layers"></i></div>
+                            <div class="metric-info">
+                                <span class="label">APIs Loaded</span>
+                                <span class="value" id="dash-total-apis">0</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="icon-wrap purple"><i data-lucide="network"></i></div>
+                            <div class="metric-info">
+                                <span class="label">Endpoints</span>
+                                <span class="value" id="dash-total-endpoints">0</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="icon-wrap amber"><i data-lucide="file-code"></i></div>
+                            <div class="metric-info">
+                                <span class="label">Test Scenarios</span>
+                                <span class="value" id="dash-total-tests">0</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="icon-wrap green"><i data-lucide="check-circle-2"></i></div>
+                            <div class="metric-info">
+                                <span class="label">Overall Pass Rate</span>
+                                <span class="value green-text" id="dash-pass-rate">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Test Outcome Distribution</h3>
+                            <div class="chart-container">
+                                <canvas id="chart-pass-fail"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Historical Quality Evolution</h3>
+                            <div class="chart-container">
+                                <canvas id="chart-evolution"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Executions Table -->
+                    <div class="card-table-wrap">
+                        <h3>Recent Execution Runs</h3>
+                        <table class="data-table" id="table-recent-runs">
+                            <thead>
+                                <tr>
+                                    <th>Target API</th>
+                                    <th>Status</th>
+                                    <th>Tests Run</th>
+                                    <th>Pass Rate</th>
+                                    <th>Avg Latency</th>
+                                    <th>Executed At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="6" class="text-muted center">No execution history recorded yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 2. IMPORT API SCREEN -->
+                <section class="tab-screen" id="screen-import">
+                    <div class="import-container">
+                        <div class="upload-zone" id="drop-zone">
+                            <i data-lucide="upload-cloud" class="upload-icon"></i>
+                            <h3>Upload OpenAPI or Swagger Specification</h3>
+                            <p>Drag and drop your <code>openapi.json</code>, <code>swagger.json</code>, or <code>.yaml</code> file here</p>
+                            <input type="file" id="file-input" accept=".json,.yaml,.yml" style="display:none;">
+                            <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()"><i data-lucide="file-plus"></i> Browse File</button>
+                        </div>
+
+                        <!-- Parsed Spec Details View -->
+                        <div class="card spec-details-card hidden" id="spec-parsed-view">
+                            <div class="spec-header-flex">
+                                <div>
+                                    <h2 id="view-spec-title">API Title</h2>
+                                    <span class="badge badge-info" id="view-spec-version">v1.0</span>
+                                    <span class="text-muted" id="view-spec-baseurl">http://localhost:8000</span>
+                                </div>
+                                <button class="btn btn-primary" id="btn-proceed-risk"><i data-lucide="shield-check"></i> Analyze Risk Now</button>
+                            </div>
+
+                            <div class="endpoints-list-wrap">
+                                <h3>Detected Endpoints (<span id="view-endpoint-count">0</span>)</h3>
+                                <div class="endpoints-tree" id="endpoints-tree"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. RISK ANALYSIS SCREEN -->
+                <section class="tab-screen" id="screen-risk">
+                    <div class="risk-overview-card">
+                        <div class="risk-badge-large" id="risk-overall-badge">MEDIUM RISK</div>
+                        <div class="risk-summary-info">
+                            <h2>AI Risk Assessment Summary</h2>
+                            <p id="risk-summary-text">Select an API spec to analyze security sensitivities, authentication, and user input mutation vectors.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btn-reanalyze-risk"><i data-lucide="refresh-cw"></i> Re-Analyze</button>
+                    </div>
+
+                    <div class="endpoints-risk-grid" id="risk-cards-grid">
+                        <!-- Risk cards injected dynamically -->
+                    </div>
+                </section>
+
+                <!-- 4. TEST CASE GENERATOR SCREEN -->
+                <section class="tab-screen" id="screen-testcases">
+                    <div class="testcases-toolbar">
+                        <div class="filters">
+                            <select id="filter-category" class="form-select">
+                                <option value="">All Categories (9)</option>
+                                <option value="Functional">Functional</option>
+                                <option value="Boundary">Boundary</option>
+                                <option value="Negative">Negative</option>
+                                <option value="Security">Security</option>
+                                <option value="Authorization">Authorization</option>
+                                <option value="Invalid payload">Invalid payload</option>
+                                <option value="Missing fields">Missing fields</option>
+                                <option value="Large payload">Large payload</option>
+                                <option value="Unexpected types">Unexpected types</option>
+                            </select>
+
+                            <select id="filter-priority" class="form-select">
+                                <option value="">All Priorities</option>
+                                <option value="CRITICAL">CRITICAL</option>
+                                <option value="HIGH">HIGH</option>
+                                <option value="MEDIUM">MEDIUM</option>
+                                <option value="LOW">LOW</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" id="btn-generate-cases"><i data-lucide="sparkles"></i> Generate AI Test Suite</button>
+                    </div>
+
+                    <div class="testcases-grid" id="testcases-list">
+                        <!-- Test case cards injected dynamically -->
+                    </div>
+                </section>
+
+                <!-- 5. EXECUTION & AI DIAGNOSIS SCREEN -->
+                <section class="tab-screen" id="screen-execution">
+                    <div class="execution-control-card">
+                        <div class="input-group">
+                            <label>Target API Base URL:</label>
+                            <input type="text" id="exec-target-url" class="form-input" value="http://localhost:8000" placeholder="https://api.example.com">
+                        </div>
+                        <button class="btn btn-success btn-large" id="btn-run-execution"><i data-lucide="play-circle"></i> Run Test Suite</button>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-wrap hidden" id="exec-progress-wrap">
+                        <div class="progress-info">
+                            <span id="exec-progress-status">Running Tests...</span>
+                            <span id="exec-progress-count">0 / 0</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="exec-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Live Results List -->
+                    <div class="execution-results-list" id="exec-results-list">
+                        <!-- Execution result cards with AI defect analysis injected dynamically -->
+                    </div>
+                </section>
+
+                <!-- 6. EVIDENCE & HISTORY SCREEN -->
+                <section class="tab-screen" id="screen-evidence">
+                    <div class="evidence-toolbar">
+                        <select id="select-history-run" class="form-select" style="min-width: 250px;">
+                            <option value="">Select Execution Run</option>
+                        </select>
+                        <div class="export-actions">
+                            <button class="btn btn-secondary" id="btn-export-html"><i data-lucide="code"></i> View HTML Report</button>
+                            <button class="btn btn-primary" id="btn-export-md"><i data-lucide="download"></i> Download Markdown Report</button>
+                        </div>
+                    </div>
+
+                    <div class="evidence-viewer-wrap card">
+                        <iframe id="report-iframe" title="Evidence Report Viewer" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

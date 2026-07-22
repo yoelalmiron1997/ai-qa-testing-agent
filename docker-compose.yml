@@ -1,0 +1,13 @@
+services:
+  ai-qa-agent:
+    build: .
+    container_name: ai_qa_testing_agent
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:////app/data/ai_qa_agent.db
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

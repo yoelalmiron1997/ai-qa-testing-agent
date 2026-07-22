@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI QA Testing Evidence Report - {{ spec_title }}</title>
+    <style>
+        :root {
+            --bg-dark: #0d0e12;
+            --card-bg: #16181d;
+            --border: #262931;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --pass: #10b981;
+            --fail: #ef4444;
+            --warning: #f59e0b;
+            --blue: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; }
+        .header .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem; }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .metric-card .title { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+        .metric-card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.25rem; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-pass { background: rgba(16, 185, 129, 0.15); color: var(--pass); border: 1px solid var(--pass); }
+        .badge-fail { background: rgba(239, 68, 68, 0.15); color: var(--fail); border: 1px solid var(--fail); }
+        .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+
+        .section-title { font-size: 1.2rem; margin-bottom: 1rem; color: #fff; font-weight: 600; }
+
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-title { font-weight: 600; font-size: 1rem; }
+        .result-meta { font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1rem; align-items: center; margin-top: 0.25rem; }
+
+        .result-body { padding: 1.25rem; }
+
+        .code-block {
+            background: #090a0d;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .defect-box {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .defect-box h4 { color: var(--fail); font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .defect-box p { font-size: 0.88rem; color: #cbd5e1; }
+
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <h1>AI QA Evidence Report</h1>
+            <div class="subtitle">API Specification: {{ spec_title }} (v{{ spec_version }}) | Generated: {{ created_at }}</div>
+        </div>
+        <div>
+            <span class="badge {{ 'badge-pass' if pass_rate >= 80 else ('badge-warning' if pass_rate >= 50 else 'badge-fail') }}">
+                Pass Rate: {{ pass_rate }}%
+            </span>
+        </div>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="title">Total Tests</div>
+            <div class="value">{{ total_tests }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="title">Passed</div>
+            <div class="value" style="color: var(--pass);">{{ passed_tests }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="title">Failed / Defects</div>
+            <div class="value" style="color: var(--fail);">{{ failed_tests }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="title">Avg Latency</div>
+            <div class="value" style="color: var(--blue);">{{ avg_latency_ms }} ms</div>
+        </div>
+    </div>
+
+    <div class="section-title">Execution Evidence Details</div>
+
+    {% for res in results %}
+    <div class="result-card">
+        <div class="result-header">
+            <div>
+                <div class="result-title">{{ res.title }}</div>
+                <div class="result-meta">
+                    <span>Category: {{ res.category }}</span>
+                    <span>Endpoint: {{ res.request_url }}</span>
+                    <span>Latency: {{ res.latency_ms }} ms</span>
+                </div>
+            </div>
+            <div>
+                <span class="badge {{ 'badge-pass' if res.status == 'PASS' else 'badge-fail' }}">
+                    {{ res.status }} ({{ res.status_code }})
+                </span>
+            </div>
+        </div>
+        <div class="result-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong style="font-size: 0.85rem; color: var(--text-muted);">Request Payload:</strong>
+                    <div class="code-block">{{ res.request_body or 'No Body Payload' }}</div>
+                </div>
+                <div>
+                    <strong style="font-size: 0.85rem; color: var(--text-muted);">Response Payload (HTTP {{ res.status_code }}):</strong>
+                    <div class="code-block">{{ res.response_body or 'No Response Body' }}</div>
+                </div>
+            </div>
+
+            {% if res.defect %}
+            <div class="defect-box">
+                <h4>AI Defect Diagnostic: {{ res.defect.possible_defect }} (Confidence: {{ res.defect.confidence }})</h4>
+                <p><strong>Reason:</strong> {{ res.defect.reason }}</p>
+                {% if res.defect.recommendation %}
+                <p style="margin-top: 0.5rem;"><strong>Recommendation:</strong> {{ res.defect.recommendation }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="footer">
+        Generated by <strong>AI QA Testing Agent Platform</strong> | Verified HTTP Execution
+    </div>
+
+</body>
+</html>
