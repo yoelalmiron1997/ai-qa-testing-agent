@@ -1,6 +1,6 @@
 /* 
- * Light Sky Blue Design System & Clean Layout (v2.0)
- * Light Cyan / Sky Blue Accents (#38bdf8), Dark Pitch Base (#090d16), Modern Pill Controls
+ * Light Sky Blue Design System & Custom Styled Form Controls (v3.0)
+ * Light Cyan / Sky Blue Accents (#38bdf8), Dark Slate Base (#0f172a)
  */
 
 :root {
@@ -67,6 +67,48 @@ button {
     box-shadow: none !important;
     appearance: none !important;
     -webkit-appearance: none !important;
+}
+
+/* Custom Styled Select Dropdowns Across All Views */
+select, .form-select {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border: 1px solid var(--border-sky) !important;
+    border-radius: var(--radius-pill) !important;
+    padding: 0.55rem 2.25rem 0.55rem 1rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    outline: none !important;
+    cursor: pointer !important;
+    transition: var(--transition-fast) !important;
+    box-shadow: 0 0 15px rgba(15, 23, 42, 0.8) !important;
+    
+    /* Custom Sky-Blue Chevron Arrow */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.85rem center !important;
+    background-size: 1rem !important;
+}
+
+select:hover, .form-select:hover {
+    border-color: var(--sky-blue) !important;
+    background-color: #1e293b !important;
+}
+
+select:focus, .form-select:focus {
+    border-color: var(--sky-blue-light) !important;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4) !important;
+}
+
+/* Dropdown Option Items */
+select option, .form-select option {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.85rem !important;
 }
 
 .craft-app {
