@@ -1,5 +1,5 @@
 /* 
- * Light Sky Blue Design System & Custom Styled Form Controls (v3.0)
+ * Light Sky Blue Design System & Custom Styled Form Controls (v4.0)
  * Light Cyan / Sky Blue Accents (#38bdf8), Dark Slate Base (#0f172a)
  */
 
@@ -67,6 +67,41 @@ button {
     box-shadow: none !important;
     appearance: none !important;
     -webkit-appearance: none !important;
+}
+
+/* Form Labels & Inputs */
+label {
+    display: block !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: var(--sky-blue-light) !important;
+    margin-bottom: 0.4rem !important;
+}
+
+.input-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.35rem !important;
+    flex: 1 1 350px !important;
+}
+
+.form-input, input[type="text"] {
+    width: 100% !important;
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border: 1px solid var(--border-sky) !important;
+    border-radius: var(--radius-pill) !important;
+    padding: 0.65rem 1.2rem !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    outline: none !important;
+    transition: var(--transition-fast) !important;
+    box-shadow: 0 0 15px rgba(15, 23, 42, 0.8) !important;
+}
+
+.form-input:focus, input[type="text"]:focus {
+    border-color: var(--sky-blue-light) !important;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4) !important;
 }
 
 /* Custom Styled Select Dropdowns Across All Views */
@@ -561,6 +596,7 @@ select option, .form-select option {
     gap: 1.25rem;
     align-items: flex-end;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .progress-bar-wrap {
